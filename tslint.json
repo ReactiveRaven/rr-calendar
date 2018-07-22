@@ -1,0 +1,29 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "rules": {
+    "semicolon": [
+      true,
+      "never"
+    ],
+    "no-any": true,
+    "no-magic-numbers": true,
+    "prefer-for-of": true,
+    "indent": [true, "spaces", 4],
+    "no-floating-promises": true,
+    "no-invalid-this": true,
+    "no-switch-case-fall-through": true,
+    "restrict-plus-operands": true,
+    "deprecation": true,
+    "linebreak-style": [true, "LF"],
+    "max-line-length": [true, 100],
+    "prefer-switch": true,
+    "prefer-template": true,
+    "quotemark": [true, "single", "jsx-single", "avoid-template", "avoid-escape"]
+  }
+}
