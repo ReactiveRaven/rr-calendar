@@ -9,10 +9,11 @@ import SmallCalendar, {
 } from './SmallCalendar'
 
 describe('SmallCalendar', () => {
-    const BODY_SELECTOR = `Grid.${TESTING_CLASS_NAMES.body}`
-    const CELL_SELECTOR = `Grid.${TESTING_CLASS_NAMES.cell}`
-    const HEADER_SELECTOR = `Grid.${TESTING_CLASS_NAMES.header}`
-    const ROW_SELECTOR = `Grid.${TESTING_CLASS_NAMES.row}`
+    const TAG = 'div'
+    const BODY_SELECTOR = `${TAG}.${TESTING_CLASS_NAMES.body}`
+    const CELL_SELECTOR = `${TAG}.${TESTING_CLASS_NAMES.cell}`
+    const HEADER_SELECTOR = `${TAG}.${TESTING_CLASS_NAMES.header}`
+    const ROW_SELECTOR = `${TAG}.${TESTING_CLASS_NAMES.row}`
     const weekdayFormatter = Intl.DateTimeFormat('en-GB', {weekday: 'narrow'}).format
     const monthTitleFormatter = Intl.DateTimeFormat(
         'en-GB',
@@ -178,7 +179,7 @@ describe('SmallCalendar', () => {
         beforeEach(() => {
             onDateSelectedSpy = Sinon.spy()
             component = mount(<SmallCalendarUndecorated
-                classes={{row: '', headerCell: '', root: ROOT_CLASS, monthTitle: ''}}
+                classes={{row: '', headerCell: '', root: ROOT_CLASS, monthTitle: '', cell: ''}}
                 selectedDate={KNOWN_DATE}
                 weekStartsOn={WeekDayStart.Sunday}
                 weekdayNameFormatter={weekdayFormatter}
@@ -190,7 +191,7 @@ describe('SmallCalendar', () => {
 
 
         it('should move the focused day back one when left is pressed', (done) => {
-            component.simulate('keyUp', {key: 'ArrowLeft'})
+            component.simulate('keyDown', {key: 'ArrowLeft'})
 
             component.update()
 
@@ -210,7 +211,7 @@ describe('SmallCalendar', () => {
         })
 
         it('should move the focused day forward one when right is pressed', (done) => {
-            component.simulate('keyUp', {key: 'ArrowRight'})
+            component.simulate('keyDown', {key: 'ArrowRight'})
 
             component.update()
 
@@ -230,7 +231,7 @@ describe('SmallCalendar', () => {
         })
 
         it('should move the focused day back by seven when up is pressed', (done) => {
-            component.simulate('keyUp', {key: 'ArrowUp'})
+            component.simulate('keyDown', {key: 'ArrowUp'})
 
             component.update()
 
@@ -250,7 +251,7 @@ describe('SmallCalendar', () => {
         })
 
         it('should move the focused day forward by seven when down is pressed', (done) => {
-            component.simulate('keyUp', {key: 'ArrowDown'})
+            component.simulate('keyDown', {key: 'ArrowDown'})
 
             component.update()
 
@@ -270,7 +271,7 @@ describe('SmallCalendar', () => {
         })
 
         it('should trigger onDateSelected when enter is pressed', () => {
-            component.simulate('keyUp', {key: 'Enter'})
+            component.simulate('keyDown', {key: 'Enter'})
 
             expect(onDateSelectedSpy.args).toHaveLength(1)
         })

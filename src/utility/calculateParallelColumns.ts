@@ -7,16 +7,19 @@ const calculateParallelColumns = (
 ): {columns: number, index: number} => {
     let index = 0
     if (allRanges.length > 0) {
-        const declaredBeforeTargetAndOverlapping = allRanges.slice(0, allRanges.indexOf(target))
+        const declaredBeforeTarget = allRanges.slice(0, allRanges.indexOf(target))
+        const declaredBeforeTargetAndOverlapping = declaredBeforeTarget
             .filter(other => target.overlapsRange(other))
         const claimedIndexes = declaredBeforeTargetAndOverlapping
-            .map(other => calculateParallelColumns(other, allRanges).index)
+            .map(other => calculateParallelColumns(other, declaredBeforeTarget).index)
         while (claimedIndexes.indexOf(index) > -1) {
             index+= 1
         }
     }
 
-    const columns = maxOverlaps(target, allRanges, log)
+    const boundaryColumnsMap = calculateBoundariesMap(allRanges)
+
+    const columns = maxOverlaps(target, allRanges, boundaryColumnsMap)
 
     return { columns, index }
 }
@@ -24,10 +27,9 @@ const calculateParallelColumns = (
 const maxOverlaps = (
     target: Range,
     allRanges: Range[],
-    log: boolean = false
+    boundaryColumnsMap: Map<Range, number>
 ): number => {
-    const boundaryColumnsMap = calculateBoundariesMap(allRanges)
-    const recursiveOverlaps = recursiveOverlapFilter(target, allRanges)
+    const recursiveOverlaps = overlapFilter(target, allRanges)
     const overlapLower = Math.min(...recursiveOverlaps.map(range => range.lower))
     const overlapUpper = Math.max(...recursiveOverlaps.map(range => range.upper))
     const totalOverlapRange = Range.fromToLessThan(overlapLower, overlapUpper)
@@ -47,22 +49,22 @@ const selfOverlaps = (
     return allRanges.filter(other => target.overlapsRange(other)).length
 }
 
-const recursiveOverlapFilter = (target: Range,  allRanges: Range[]): Range[] => {
-    const unique = (item: Range, index: number, arr: Range[]) => arr.indexOf(item) === index
-    const allRangesExcludingTarget = allRanges.filter(item => item !== target)
-    const localOverlaps = allRangesExcludingTarget.filter(other => target.overlapsRange(other))
-    const remoteOverlaps = localOverlaps
-        .map(other => recursiveOverlapFilter(other,  allRangesExcludingTarget))
-        .reduce((arr,  item) => arr.concat(item), new Array<Range>())
+const overlapFilter = (target: Range,  allRanges: Range[]): Range[] => {
+    let previousRange = Range.empty
+    let currentRange = target
+    while (!previousRange.equals(currentRange)) {
+        previousRange = currentRange
+        currentRange = allRanges
+            .filter(other => currentRange.overlapsRange(other))
+            .reduce((a, b) => a.union(b), currentRange)
+    }
 
-    return [target]
-        .concat(localOverlaps)
-        .concat(remoteOverlaps)
-        .filter(unique)
+    const results = allRanges.filter(other => currentRange.overlapsRange(other))
+    return results.length > 0 ? results : [ target ]
 }
 
 /**
- * Generates a 'bounary map' to show how many overlaps there are at a given time.
+ * Generates a 'boundary map' to show how many overlaps there are at a given time.
  *
  * i.e. one shift, 9-5, results in a map:
  *
@@ -93,7 +95,5 @@ export const calculateBoundariesMap = (allRanges: Range[]): Map<Range,  number> 
             new Map<Range, number>()
         )
 }
-
-
 
 export default calculateParallelColumns
