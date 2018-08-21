@@ -1,15 +1,17 @@
-import {createStyles, Grid, Theme, withStyles, WithStyles,} from '@material-ui/core'
+import {
+    createStyles,
+    Grid,
+    Overwrite,
+    Theme,
+    withStyles
+} from '@material-ui/core'
+import { CSSProperties, StyledComponentProps } from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 
+import WeekDayStart from '../../enum/WeekDayStart'
 import SmallCalendarDateLabel from '../SmallCalendarDayLabel/SmallCalendarDateLabel'
 
-export enum WeekDayStart {
-    Monday = 1,
-    Saturday = -1,
-    Sunday = 0
-}
-
-interface ISmallCalendarProps {
+export interface ISmallCalendarProps {
     selectedDate: Date
     weekStartsOn: WeekDayStart
     weekdayNameFormatter?: (date: Date) => string
@@ -20,9 +22,16 @@ interface ISmallCalendarProps {
 export interface ISmallCalendarState {
     hasFocus: boolean,
     focusedDate: Date | undefined,
+    weekStartsOn: WeekDayStart
 }
 
-const styles = (theme: Theme) => createStyles({
+type ClassNames =
+    | 'headerCell'
+    | 'monthTitle'
+    | 'root'
+    | 'row'
+
+const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
     headerCell: {
         color: theme.palette.text.secondary,
         marginBottom: theme.spacing.unit,
@@ -52,13 +61,13 @@ export const TESTING_CLASS_NAMES = {
     row: 'small-calendar-row',
 }
 
-export type SmallCalendarProps = ISmallCalendarProps & WithStyles<typeof styles>
+export type SmallCalendarProps = ISmallCalendarProps & { classes: Record<ClassNames, string> }
 
 const DAYS_IN_WEEK = 7
 const FULL_WIDTH_OF_GRID = 12
 
 class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarState> {
-    public readonly state = {
+    public readonly state: ISmallCalendarState = {
         focusedDate: undefined,
         hasFocus: false,
         weekStartsOn: WeekDayStart.Monday,
@@ -77,7 +86,8 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
         const standardSpacing = 8
 
         const { selectedDate } = this.props
-        const { focusedDate = selectedDate } = this.state
+        const { focusedDate: maybeFocusedDate } = this.state
+        const focusedDate = maybeFocusedDate || selectedDate
 
         const arbitraryStartOfWeekDate = new Date()
         arbitraryStartOfWeekDate
@@ -282,5 +292,11 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
 
 export const undecorated = SmallCalendar
 
+const decorated: React.ComponentType<
+    Overwrite<
+        ISmallCalendarProps,
+        StyledComponentProps<ClassNames>
+    >
+> = withStyles(styles)(SmallCalendar)
 
-export default withStyles(styles)(SmallCalendar)
+export default decorated

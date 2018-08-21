@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-interface IDateLabelProps {
+export interface IDateLabelProps {
     date: Date
     selected: boolean
     formatter?: (date: Date) => string
