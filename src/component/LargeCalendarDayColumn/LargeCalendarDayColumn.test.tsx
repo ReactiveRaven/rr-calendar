@@ -6,15 +6,19 @@ describe('LargeCalendarDayColumn', () => {
     const KNOWN_DATE = new Date('2000-12-31T23:59:59Z')
     const weekdayFormatter = Intl.DateTimeFormat('en-GB', { weekday: 'long'}).format
     const dateFormatter = Intl.DateTimeFormat('en-GB', { day: '2-digit' }).format
+    const classes = Object.freeze({
+    })
+    const defaultProps = { classes }
 
     it('should render without crashing', () => {
-        expect(() => shallow(<LargeCalendarDayColumn date={KNOWN_DATE}/>)).not.toThrow()
+        expect(() => shallow(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>))
+            .not.toThrow()
     })
 
     describe('header', () => {
         it('should have a header', () => {
             expect(
-                mount(<LargeCalendarDayColumn date={KNOWN_DATE}/>)
+                mount(<LargeCalendarDayColumn  {...defaultProps} date={KNOWN_DATE}/>)
                     .find(`.${TESTING_CLASS_NAMES.header}`)
             )
                 .toHaveLength(1)
@@ -23,6 +27,7 @@ describe('LargeCalendarDayColumn', () => {
         it('should contain the current day of the week', () => {
             expect(
                 mount(<LargeCalendarDayColumn
+                    {...defaultProps}
                     date={KNOWN_DATE}
                     weekdayFormatter={weekdayFormatter}
                 />)
@@ -33,7 +38,11 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should contain the current day of the month', () => {
             expect(
-                mount(<LargeCalendarDayColumn date={KNOWN_DATE} dateFormatter={dateFormatter}/>)
+                mount(<LargeCalendarDayColumn
+                    {...defaultProps}
+                    date={KNOWN_DATE}
+                    dateFormatter={dateFormatter}
+                />)
                     .text()
             )
                 .toContain(dateFormatter(KNOWN_DATE))
@@ -43,7 +52,7 @@ describe('LargeCalendarDayColumn', () => {
     describe('body', () => {
         it('should have a body', () => {
             expect(
-                mount(<LargeCalendarDayColumn date={KNOWN_DATE}/>)
+                mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>)
                     .find(`.${TESTING_CLASS_NAMES.body}`)
             )
                 .toHaveLength(1)
@@ -52,7 +61,7 @@ describe('LargeCalendarDayColumn', () => {
         it('should be divided into 24 cells, one per hour', () => {
             const HOURS_IN_DAY = 24
             expect(
-                mount(<LargeCalendarDayColumn date={KNOWN_DATE}/>)
+                mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>)
                     .find(`.${TESTING_CLASS_NAMES.hourCell}`)
             )
                 .toHaveLength(HOURS_IN_DAY)

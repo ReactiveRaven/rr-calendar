@@ -51,35 +51,40 @@ const styles = (theme: Theme) => createStyles({
 export type SmallCalendarDateLabelProps = ISmallCalendarDateLabelProps & WithStyles<typeof styles>
 
 
-const SmallCalendarDateLabel: React.StatelessComponent<SmallCalendarDateLabelProps> = (props) => {
-    const outerClasses = [props.classes.root]
-    const innerClasses = []
-    if (props.active === true) {
-        outerClasses.push(props.classes.active)
-        innerClasses.push(props.classes.activeInner)
-    } else {
-        if (props.current === true) {
-            innerClasses.push(props.classes.current)
+class  SmallCalendarDateLabel extends React.PureComponent<SmallCalendarDateLabelProps, {}>
+{
+    public render() {
+        const props = this.props
+
+        const outerClasses = [props.classes.root]
+        const innerClasses = []
+        if (props.active === true) {
+            outerClasses.push(props.classes.active)
+            innerClasses.push(props.classes.activeInner)
         } else {
-            outerClasses.push(props.classes.notCurrent)
+            if (props.current === true) {
+                innerClasses.push(props.classes.current)
+            } else {
+                outerClasses.push(props.classes.notCurrent)
+            }
+            if (props.empty === false) {
+                outerClasses.push(props.classes.nonEmpty)
+            }
         }
-        if (props.empty === false) {
-            outerClasses.push(props.classes.nonEmpty)
+
+        if (props.focused === true) {
+            outerClasses.push(props.classes.focused)
+            innerClasses.push(props.classes.focusedInner)
         }
-    }
 
-    if (props.focused === true) {
-        outerClasses.push(props.classes.focused)
-        innerClasses.push(props.classes.focusedInner)
-    }
-
-    return (
-        <div className={outerClasses.join(' ')}>
-            <div className={innerClasses.join(' ')} >
-                {props.children}
+        return (
+            <div className={outerClasses.join(' ')}>
+                <div className={innerClasses.join(' ')} >
+                    {props.children}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 

@@ -1,6 +1,7 @@
 import {createStyles, Grid, Theme, withStyles, WithStyles,} from '@material-ui/core'
 import * as React from 'react'
 
+import {DAYS_IN_WEEK} from '../../constants'
 import SmallCalendarDateLabel from '../SmallCalendarDayLabel/SmallCalendarDateLabel'
 
 export enum WeekDayStart {
@@ -23,6 +24,9 @@ export interface ISmallCalendarState {
 }
 
 const styles = (theme: Theme) => createStyles({
+    cell: {
+        flexGrow: 1,
+    },
     headerCell: {
         color: theme.palette.text.secondary,
         marginBottom: theme.spacing.unit,
@@ -41,8 +45,12 @@ const styles = (theme: Theme) => createStyles({
         textAlign: 'center',
     },
     row: {
+        alignItems: 'stretch',
+        display: 'flex',
+        justifyContent: 'space-evenly',
         marginTop: theme.spacing.unit,
-    },
+        width: '100%',
+    }
 })
 
 export const TESTING_CLASS_NAMES = {
@@ -54,10 +62,7 @@ export const TESTING_CLASS_NAMES = {
 
 export type SmallCalendarProps = ISmallCalendarProps & WithStyles<typeof styles>
 
-const DAYS_IN_WEEK = 7
-const FULL_WIDTH_OF_GRID = 12
-
-class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarState> {
+class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalendarState> {
     public readonly state = {
         focusedDate: undefined,
         hasFocus: false,
@@ -74,7 +79,6 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
 
     public render() {
         const numberOfRows = 6
-        const standardSpacing = 8
 
         const { selectedDate } = this.props
         const { focusedDate = selectedDate } = this.state
@@ -123,9 +127,8 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
         const rowContents = (new Array(numberOfRows))
             .fill((new Array(DAYS_IN_WEEK)).fill(undefined))
             .map((rowArray: undefined[], rowIndex: number) => {
-                return <Grid
+                return <div
                     key={`${rowIndex}`}
-                    container={true}
                     className={[TESTING_CLASS_NAMES.row, this.props.classes.row].join(' ')}
                 >
                     { rowArray
@@ -154,12 +157,10 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
                             const modulo = 3
                             const empty = (currentDay.getDate() % modulo) === 0
 
-                            const classes = [TESTING_CLASS_NAMES.cell]
+                            const classes = [TESTING_CLASS_NAMES.cell, this.props.classes.cell]
 
-                            return <Grid
+                            return <div
                                 key={`${columnIndex}`}
-                                item={true}
-                                xs={true}
                                 className={classes.join(' ')}
                                 onClick={this.handleClickEvent(currentDay)}
                             >
@@ -171,10 +172,10 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
                                 >
                                     {dayNumberFormatter(currentDay)}
                                 </SmallCalendarDateLabel>
-                            </Grid>
+                            </div>
                         })
                     }
-                </Grid>
+                </div>
             })
 
         return (
@@ -183,29 +184,29 @@ class SmallCalendar extends React.Component<SmallCalendarProps, ISmallCalendarSt
                 className={this.props.classes.root}
                 onFocus={this.handleFocusEvent}
                 onBlur={this.handleBlurEvent}
-                onKeyUp={this.handleKeyPressEvent}
+                onKeyDown={this.handleKeyPressEvent}
             >
-                <Grid
-                    container={true}
-                    spacing={standardSpacing}
-                    className={[TESTING_CLASS_NAMES.header].join(' ')}
+                <div
+                    className={TESTING_CLASS_NAMES.header}
                 >
-                    <Grid
-                        item={true}
-                        xs={FULL_WIDTH_OF_GRID}
-                        className={this.props.classes.monthTitle}
-                    >
-                        {monthTitleFormatter(focusedDate)}
-                    </Grid>
-                    {headerItems}
-                </Grid>
-                <Grid
-                    container={true}
-                    spacing={standardSpacing}
+                    <div className={this.props.classes.row}>
+                        <div
+                            className={[
+                                this.props.classes.monthTitle
+                            ].join(' ')}
+                        >
+                            {monthTitleFormatter(focusedDate)}
+                        </div>
+                    </div>
+                    <div className={this.props.classes.row}>
+                        {headerItems}
+                    </div>
+                </div>
+                <div
                     className={[TESTING_CLASS_NAMES.body].join(' ')}
                 >
                     {rowContents}
-                </Grid>
+                </div>
             </div>
         )
     }
