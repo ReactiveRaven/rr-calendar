@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-interface ITimeLabelProps {
+export interface ITimeLabelProps {
     date: Date
     formatter?: (date: Date) => string
 }

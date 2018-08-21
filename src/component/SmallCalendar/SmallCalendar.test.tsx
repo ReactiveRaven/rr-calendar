@@ -1,11 +1,11 @@
 import {mount, ReactWrapper} from 'enzyme'
 import * as React from 'react'
 import * as Sinon from 'sinon'
+import WeekDayStart from '../../enum/WeekDayStart'
 import SmallCalendar, {
     ISmallCalendarState,
     TESTING_CLASS_NAMES,
     undecorated as SmallCalendarUndecorated,
-    WeekDayStart
 } from './SmallCalendar'
 
 describe('SmallCalendar', () => {
