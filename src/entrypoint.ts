@@ -19,6 +19,7 @@ import {
 } from './component/SmallCalendarDayLabel/SmallCalendarDateLabel'
 import { default as _TimeLabel, ITimeLabelProps} from './component/TimeLabel/TimeLabel'
 import { default as _WeekDayStart } from './enum/WeekDayStart'
+export { default as IConcreteEvent } from './model/IConcreteEvent'
 
 export const DateLabel =
     _DateLabel as React.StatelessComponent<IDateLabelProps>

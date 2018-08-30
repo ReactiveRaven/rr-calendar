@@ -1,8 +1,14 @@
 {
-  "name": "react-calendar",
+  "name": "rr-calendar",
+  "keywords": ["react", "calendar", "material", "materialui", "material-ui"],
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "main": "lib/entrypoint.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactiveraven/rr-calendar.git"
+  },
   "types": "lib/entrypoint.d.ts",
   "dependencies": {
     "keyboardevent-key-polyfill": "^1.1.0"
