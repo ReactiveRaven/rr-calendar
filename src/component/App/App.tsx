@@ -142,9 +142,9 @@ class App extends React.Component<AppProps, IAppState> {
         console.log(JSON.stringify(event))
     }
 
-    private handleHoverEvent = (event: IConcreteEvent) => {
+    private handleHoverEvent = (event: IConcreteEvent, ref: React.RefObject<HTMLElement>) => {
         // tslint:disable-next-line:no-console
-        console.info(JSON.stringify(event))
+        console.info(JSON.stringify(event), ref)
     }
 }
 

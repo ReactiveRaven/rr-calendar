@@ -76,6 +76,14 @@ const cls = (...classes: Array<string | boolean>) =>
         .join(' ')
 
 class EventBlock extends React.Component<EventBlockProps, {}> {
+    private readonly ref: React.RefObject<HTMLDivElement>
+
+    constructor(props: EventBlockProps) {
+        super(props)
+
+        this.ref = React.createRef()
+    }
+
     public render() {
         const {
             accentClassName = '',
@@ -95,6 +103,7 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
 
         return (
             <div
+                ref={this.ref}
                 style={style}
                 className={[eventClassName, className, root].join(' ')}
                 onClick={this.handleClick}
@@ -172,7 +181,7 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
         const { onSelectEvent } = delegate
 
         if (onSelectEvent !== undefined) {
-            onSelectEvent(this.props.event)
+            onSelectEvent(this.props.event, this.ref)
         }
     }
 
@@ -181,7 +190,7 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
         const { onHoverEvent } = delegate
 
         if (onHoverEvent !== undefined) {
-            onHoverEvent(this.props.event)
+            onHoverEvent(this.props.event, this.ref)
         }
     }
 
