@@ -1,9 +1,9 @@
 import {createStyles, Overwrite, Theme, Typography, withStyles} from '@material-ui/core'
-import * as React from 'react'
 import {
     CSSProperties,
     StyledComponentProps
-} from '../../../node_modules/@material-ui/core/styles/withStyles'
+} from '@material-ui/core/styles/withStyles'
+import * as React from 'react'
 import {HOURS_IN_DAY} from '../../constants'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
