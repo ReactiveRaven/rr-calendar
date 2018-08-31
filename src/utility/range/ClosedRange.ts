@@ -1,14 +1,15 @@
 import IRange from './IRange'
+import NumericallyComparable from './NumericallyComparable'
 
-export default class ClosedRange implements IRange {
-    public static fromTo(lower: number, upper: number): ClosedRange {
+export default class ClosedRange<T extends NumericallyComparable> implements IRange<T> {
+    public static fromTo<T extends NumericallyComparable>(lower: T, upper: T): ClosedRange<T> {
         return new ClosedRange(lower, upper)
     }
 
-    public readonly lower: number
-    public readonly upper: number
+    public readonly lower: T
+    public readonly upper: T
 
-    private constructor(lower: number, upper: number) {
+    private constructor(lower: T, upper: T) {
         if (lower > upper) {
             throw new RangeError(`Range ${lower}...${upper} is invalid`)
         }
@@ -16,19 +17,19 @@ export default class ClosedRange implements IRange {
         this.upper = upper
     }
 
-    public containsValue(value: number) {
+    public containsValue(value: T) {
         return value >= this.lower && value <= this.upper
     }
 
-    public containsRange(range: IRange) {
+    public containsRange(range: IRange<T>) {
         return this.containsValue(range.lower) && this.containsValue(range.upper)
     }
 
-    public overlapsRange(range: IRange) {
+    public overlapsRange(range: IRange<T>) {
         return this.containsValue(range.lower) || this.containsValue(range.upper)
     }
 
-    public union(otherRange: ClosedRange) {
+    public union(otherRange: ClosedRange<T>) {
         if (!this.overlapsRange(otherRange)) {
             throw new Error(
                 `Cannot form union of ${this.toString()} and ${otherRange.toString()}; ` +
@@ -37,8 +38,8 @@ export default class ClosedRange implements IRange {
         }
 
         return ClosedRange.fromTo(
-            Math.min(this.lower, otherRange.lower),
-            Math.max(this.upper, otherRange.upper)
+            this.lower < otherRange.lower ? this.lower : otherRange.lower,
+            this.upper > otherRange.upper ? this.upper : otherRange.upper
         )
     }
 
@@ -48,20 +49,30 @@ export default class ClosedRange implements IRange {
                 `asArray given a step of ${step}; which would cause an infinite loop`
             )
         }
-        const array: number[] = [this.lower]
-        let pointer = this.lower + step
+        const array: T[] = [this.lower]
+        let pointer = this.add(this.lower, step)
         while (pointer <= this.upper) {
             array.push(pointer)
-            pointer += step
+            pointer = this.add(pointer, step)
         }
         return array
     }
 
-    public equals(otherRange: ClosedRange): boolean {
+    public equals(otherRange: ClosedRange<T>): boolean {
         return otherRange.lower === this.lower && otherRange.upper === this.upper
     }
 
     public toString() {
         return `${this.lower}...${this.upper}`
+    }
+
+    private add = (left: T, right: number): T => {
+        if (left instanceof Date) {
+            // tslint:disable-next-line:no-any
+            return (new Date(left.getTime() + right) as any) as T
+        } else {
+            // tslint:disable-next-line:no-any
+            return ((left.valueOf() + right) as any) as T
+        }
     }
 }

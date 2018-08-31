@@ -112,17 +112,16 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
         midnight.setHours(0, 0, 0, 0)
         const tomorrow = new Date(midnight)
         tomorrow.setDate(tomorrow.getDate() + 1)
-        const timeRange = Range.fromToLessThan(midnight.getTime(), tomorrow.getTime())
+        const timeRange = Range.fromToLessThan(midnight, tomorrow)
 
         const allEvents = events
             .filter(event =>
-                Range.fromToLessThan(event.start.getTime(), event.end.getTime())
-                    .overlapsRange(timeRange)
+                Range.fromToLessThan(event.start, event.end).overlapsRange(timeRange)
             )
 
         const columnInfoMap = allEvents
             .map(event =>
-                Range.fromToLessThan(event.start.getTime(), event.end.getTime())
+                Range.fromToLessThan(event.start, event.end)
             )
             .map((range, _, allRanges) =>
                 calculateParallelColumns(range, allRanges)
