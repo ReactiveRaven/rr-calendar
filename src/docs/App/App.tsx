@@ -1,11 +1,11 @@
 import {colors, createStyles, Theme, withStyles} from '@material-ui/core'
 import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
-import WeekDayStart from '../../enum/WeekDayStart'
+import LargeCalendar from '../../component/LargeCalendar/LargeCalendar'
+import {generateDay} from '../../component/LargeCalendarDayColumn/testData'
 import IConcreteEvent from '../../model/IConcreteEvent'
-import LargeCalendar from '../LargeCalendar/LargeCalendar'
-import {generateDay} from '../LargeCalendarDayColumn/testData'
-import SmallCalendar from '../SmallCalendar/SmallCalendar'
+import LargeCalendarDemo from '../LargeCalendarDemo/LargeCalendarDemo'
+import SmallCalendarDemo from '../SmallCalendarDemo/SmallCalendarDemo'
 
 interface IAppState {
     selectedDate: Date
@@ -110,14 +110,8 @@ class App extends React.Component<AppProps, IAppState> {
 
         return (
             <div className='App'>
-                <div className={'calendar-container'}>
-                    <SmallCalendar
-                        weekStartsOn={WeekDayStart.Monday}
-                        selectedDate={this.state.selectedDate}
-                        onDateSelected={this.handleSelectDate}
-                    />
-                </div>
-                <div style={{ display: 'flex', width: '100%' }}>
+                <SmallCalendarDemo/>
+                <LargeCalendarDemo/>
                     <div style={{height: '100vh', flexGrow: 1}}>
                         <LargeCalendar
                             date={this.state.selectedDate}
@@ -128,13 +122,8 @@ class App extends React.Component<AppProps, IAppState> {
                             }}
                         />
                     </div>
-                </div>
             </div>
         )
-    }
-
-    private handleSelectDate = (selectedDate: Date) => {
-        this.setState({ selectedDate })
     }
 
     private handleSelectEvent = (event: IConcreteEvent) => {
