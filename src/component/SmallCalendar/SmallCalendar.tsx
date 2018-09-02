@@ -10,6 +10,8 @@ import * as React from 'react'
 
 import {DAYS_IN_WEEK} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
+import ISimpleEvent from '../../model/ISimpleEvent'
+import Range from '../../utility/range/Range'
 import SmallCalendarDateLabel from '../SmallCalendarDayLabel/SmallCalendarDateLabel'
 
 export interface ISmallCalendarProps {
@@ -18,6 +20,7 @@ export interface ISmallCalendarProps {
     weekdayNameFormatter?: (date: Date) => string
     monthTitleFormatter?: (date: Date) => string
     onDateSelected?: (date: Date) => void
+    events?: ISimpleEvent[]
 }
 
 export interface ISmallCalendarState {
@@ -90,7 +93,7 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
     public render() {
         const numberOfRows = 6
 
-        const { selectedDate } = this.props
+        const { selectedDate, events = [] } = this.props
         const { focusedDate: maybeFocusedDate } = this.state
         const focusedDate = maybeFocusedDate || selectedDate
 
@@ -129,11 +132,13 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
             .format
         const firstDayOfMonth = new Date(focusedDate)
         firstDayOfMonth.setDate(1)
-        const firstDisplayedDay = new Date(firstDayOfMonth.getTime())
+        const firstDisplayedDay = new Date(firstDayOfMonth)
         const targetWeekdayIndex = (DAYS_IN_WEEK + this.props.weekStartsOn.valueOf()) % DAYS_IN_WEEK
         while (firstDisplayedDay.getDay() !== targetWeekdayIndex) {
             firstDisplayedDay.setDate(firstDisplayedDay.getDate() - 1)
         }
+
+        const eventRanges = events.map(event => Range.fromToLessThan(event.start, event.end))
 
         const rowContents = (new Array(numberOfRows))
             .fill((new Array(DAYS_IN_WEEK)).fill(undefined))
@@ -148,6 +153,18 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
                             currentDay.setDate(
                                 currentDay.getDate() + (rowIndex * DAYS_IN_WEEK) + columnIndex
                             )
+
+                            const todayForRange = new Date()
+                            todayForRange.setFullYear(
+                                currentDay.getFullYear(),
+                                currentDay.getMonth(),
+                                currentDay.getDate()
+                            )
+                            todayForRange.setHours(0, 0, 0, 0)
+                            const tomorrowForRange = new Date(todayForRange)
+                            tomorrowForRange.setDate(todayForRange.getDate() + 1)
+
+                            const dateRange = Range.fromToLessThan(todayForRange, tomorrowForRange)
 
                             const isFocusedMonth = (
                                 focusedDate.getMonth() === currentDay.getMonth() &&
@@ -165,8 +182,9 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
                                     focusedDate.getDate() === currentDay.getDate()
                             )
 
-                            const modulo = 3
-                            const empty = (currentDay.getDate() % modulo) === 0
+                            const eventsForDay = eventRanges
+                                .filter(range => dateRange.overlapsRange(range))
+                            const empty = eventsForDay.length === 0
 
                             const classes = [TESTING_CLASS_NAMES.cell, this.props.classes.cell]
 

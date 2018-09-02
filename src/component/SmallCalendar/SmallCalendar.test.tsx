@@ -2,6 +2,7 @@ import {mount, ReactWrapper} from 'enzyme'
 import * as React from 'react'
 import * as Sinon from 'sinon'
 import WeekDayStart from '../../enum/WeekDayStart'
+import IConcreteEvent from '../../model/IConcreteEvent'
 import SmallCalendar, {
     ISmallCalendarState,
     TESTING_CLASS_NAMES,
@@ -274,6 +275,38 @@ describe('SmallCalendar', () => {
             component.simulate('keyDown', {key: 'Enter'})
 
             expect(onDateSelectedSpy.args).toHaveLength(1)
+        })
+    })
+
+    describe('events', () => {
+        it('should highlight days that contain events', () => {
+            const tomorrow = new Date(KNOWN_DATE)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+
+            const events: IConcreteEvent[] = [
+                {
+                    accentClassName: 'foo',
+                    attributes: {},
+                    className: 'bar',
+                    end: tomorrow,
+                    people: [],
+                    start: tomorrow
+                }
+            ]
+
+            const component = mount(<SmallCalendarUndecorated
+                classes={{row: '', headerCell: '', root: '', monthTitle: '', cell: ''}}
+                selectedDate={KNOWN_DATE}
+                weekStartsOn={WeekDayStart.Sunday}
+                weekdayNameFormatter={weekdayFormatter}
+                events={events}
+            />)
+
+            const nonEmptyDate = component.find('SmallCalendarDateLabel[empty=false]')
+
+            expect(nonEmptyDate).toHaveLength(1)
+
+            expect(nonEmptyDate.text()).toEqual('1')
         })
     })
 })
