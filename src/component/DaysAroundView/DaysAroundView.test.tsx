@@ -2,6 +2,7 @@ import {mount} from 'enzyme'
 import * as React from 'react'
 import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
 import DaysAroundView from './DaysAroundView'
+import IConcreteEvent from '../../model/IConcreteEvent'
 
 describe('DaysAroundView', () => {
     it('should render without crashing', () => {
@@ -130,7 +131,7 @@ describe('DaysAroundView', () => {
     })
 
     it('should pass events down properly', () => {
-        const events = []
+        const events: IConcreteEvent[] = []
 
         const component = mount(<DaysAroundView
             date={new Date()}
