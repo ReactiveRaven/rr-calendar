@@ -6,23 +6,32 @@ const calculateParallelColumns = <T extends NumericallyComparable>(
     allRanges: Array<Range<T>>,
     log: boolean = false
 ): {columns: number, index: number} => {
-    let index = 0
-    if (allRanges.length > 0) {
-        const declaredBeforeTarget = allRanges.slice(0, allRanges.indexOf(target))
-        const declaredBeforeTargetAndOverlapping = declaredBeforeTarget
-            .filter(other => target.overlapsRange(other))
-        const claimedIndexes = declaredBeforeTargetAndOverlapping
-            .map(other => calculateParallelColumns(other, declaredBeforeTarget).index)
-        while (claimedIndexes.indexOf(index) > -1) {
-            index+= 1
-        }
-    }
+    const index = calculateIndexes(target, allRanges).index
 
     const boundaryColumnsMap = calculateBoundariesMap(allRanges)
 
     const columns = maxOverlaps(target, allRanges, boundaryColumnsMap)
 
     return { columns, index }
+}
+
+const calculateIndexes = <T extends NumericallyComparable>(
+    target: Range<T>,
+    allRanges: Array<Range<T>>
+): {index: number} => {
+    let index = 0
+    if (allRanges.length > 0) {
+        const declaredBeforeTarget = allRanges.slice(0, allRanges.indexOf(target))
+        const declaredBeforeTargetAndOverlapping = declaredBeforeTarget
+            .filter(other => target.overlapsRange(other))
+        const claimedIndexes = declaredBeforeTargetAndOverlapping
+            .map(other => calculateIndexes(other, declaredBeforeTarget).index)
+        while (claimedIndexes.indexOf(index) > -1) {
+            index+= 1
+        }
+    }
+
+    return { index }
 }
 
 const maxOverlaps = <T extends NumericallyComparable>(
