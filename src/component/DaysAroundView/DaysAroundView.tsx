@@ -26,7 +26,8 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
             emphasise,
             display,
             i18nConfig,
-            delegate
+            delegate,
+            events
         } = this.props
 
         return (
@@ -42,7 +43,7 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
                                 date={beforeDate}
                                 display={display}
                                 emphasise={emphasise}
-                                events={[]}
+                                events={events}
                                 key={`before${beforeDate.toISOString()}`}
                                 i18nConfig={i18nConfig}
                                 delegate={delegate}
@@ -53,7 +54,7 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
                     date={date}
                     display={display}
                     emphasise={emphasise}
-                    events={[]}
+                    events={events}
                     i18nConfig={i18nConfig}
                     delegate={delegate}
                 />
@@ -67,7 +68,7 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
                                 date={afterDate}
                                 display={display}
                                 emphasise={emphasise}
-                                events={[]}
+                                events={events}
                                 key={`after${afterDate.toISOString()}`}
                                 i18nConfig={i18nConfig}
                                 delegate={delegate}

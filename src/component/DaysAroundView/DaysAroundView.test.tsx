@@ -128,4 +128,22 @@ describe('DaysAroundView', () => {
         )
             .toBe(delegate)
     })
+
+    it('should pass events down properly', () => {
+        const events = []
+
+        const component = mount(<DaysAroundView
+            date={new Date()}
+            display={{}}
+            events={events}
+        />)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .first()
+                .prop('events')
+        )
+            .toBe(events)
+    })
 })
