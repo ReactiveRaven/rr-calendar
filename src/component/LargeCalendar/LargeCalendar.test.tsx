@@ -95,4 +95,17 @@ describe('LargeCalendar', () => {
         expect(component.find('WeekView')).toHaveLength(0)
         expect(component.find('DaysAroundView')).toHaveLength(1)
     })
+
+    it('should support grouped week view', () => {
+        const component = mount(<LargeCalendar
+            date={new Date()}
+            events={[]}
+            viewConfig={LargeCalendarViewConfig.groupedWeekView({
+                swimlaneForEvent: (event) => event.className,
+            })}
+        />)
+
+        expect(component.find('WeekView')).toHaveLength(0)
+        expect(component.find('GroupedWeekView')).toHaveLength(1)
+    })
 })

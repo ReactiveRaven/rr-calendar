@@ -1,26 +1,36 @@
-import {mount, shallow} from 'enzyme'
+import {mount} from 'enzyme'
 import * as React from 'react'
+import {HOURS_IN_DAY} from '../../constants'
 import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import ISwimlane from '../../model/ISwimlane'
 import EventBlock from '../EventBlock/EventBlock'
-import LargeCalendarDayColumn, {TESTING_CLASS_NAMES} from './LargeCalendarDayColumn'
+import VerticalSchedulerColumn, { TESTING_CLASS_NAMES } from './VerticalSchedulerColumn'
 
-describe('LargeCalendarDayColumn', () => {
+describe('VerticalSchedulerColumn', () => {
     const KNOWN_DATE = new Date('2000-12-31T23:59:59Z')
     const weekDayFormatter = Intl.DateTimeFormat('en-GB', { weekday: 'long'}).format
     const monthDayFormatter = Intl.DateTimeFormat('en-GB', { day: '2-digit' }).format
     const classes = Object.freeze({})
-    const defaultProps = { classes, events: [] }
+    const defaultProps = {
+        classes,
+        date: KNOWN_DATE,
+        events: [],
+        swimlaneForEvent: (event: IConcreteEvent, swimlanes: ISwimlane[]) => swimlanes[0]!,
+        swimlanes: [{
+            label: 'foo',
+            unitHeight: 1
+        }],
+    }
 
     it('should render without crashing', () => {
-        expect(() => shallow(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>))
-            .not.toThrow()
+        expect(() => mount(<VerticalSchedulerColumn {...defaultProps} />)).not.toThrow()
     })
 
     describe('header', () => {
         it('should have a header', () => {
             expect(
-                mount(<LargeCalendarDayColumn  {...defaultProps} date={KNOWN_DATE}/>)
+                mount(<VerticalSchedulerColumn  {...defaultProps} />)
                     .find(`.${TESTING_CLASS_NAMES.header}`)
             )
                 .toHaveLength(1)
@@ -28,9 +38,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should contain the current day of the week', () => {
             expect(
-                mount(<LargeCalendarDayColumn
+                mount(<VerticalSchedulerColumn
                     {...defaultProps}
-                    date={KNOWN_DATE}
                     i18nConfig={{weekDayFormatter}}
                 />)
                     .text()
@@ -40,9 +49,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should contain the current day of the month', () => {
             expect(
-                mount(<LargeCalendarDayColumn
+                mount(<VerticalSchedulerColumn
                     {...defaultProps}
-                    date={KNOWN_DATE}
                     i18nConfig={{monthDayFormatter}}
                 />)
                     .text()
@@ -54,16 +62,15 @@ describe('LargeCalendarDayColumn', () => {
     describe('body', () => {
         it('should have a body', () => {
             expect(
-                mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>)
+                mount(<VerticalSchedulerColumn {...defaultProps}/>)
                     .find(`.${TESTING_CLASS_NAMES.body}`)
             )
                 .toHaveLength(1)
         })
 
-        it('should be divided into 24 cells, one per hour', () => {
-            const HOURS_IN_DAY = 24
+        it(`should be divided into ${HOURS_IN_DAY} cells, one per hour`, () => {
             expect(
-                mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>)
+                mount(<VerticalSchedulerColumn {...defaultProps}/>)
                     .find(`.${TESTING_CLASS_NAMES.hourCell}`)
             )
                 .toHaveLength(HOURS_IN_DAY)
@@ -80,7 +87,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -104,7 +111,7 @@ describe('LargeCalendarDayColumn', () => {
             ]
             expect(
                 mount(
-                    <LargeCalendarDayColumn date={new Date()} events={events}/>
+                    <VerticalSchedulerColumn {...defaultProps} date={new Date()} events={events}/>
                 )
                     .find('EventBlock')
             )
@@ -123,7 +130,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -151,7 +158,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -179,7 +186,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -207,7 +214,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -239,7 +246,7 @@ describe('LargeCalendarDayColumn', () => {
                     start: new Date()
                 }
             ]
-            const component = mount(<LargeCalendarDayColumn
+            const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
                 date={new Date()}
                 events={events}
@@ -253,6 +260,27 @@ describe('LargeCalendarDayColumn', () => {
                     .prop('className')
             )
                 .toEqual(overriddenClassName)
+        })
+    })
+
+    describe('column', () => {
+        it('should contain a swimlane element for each swimlane passed in', () => {
+            const swimlanes: ISwimlane[] = [
+                {
+                    label: 'Foo',
+                    unitHeight: 1
+                },
+                {
+                    label: 'Bar',
+                    unitHeight: 1
+                }
+            ]
+
+            expect(
+                mount(<VerticalSchedulerColumn {...defaultProps} swimlanes={swimlanes}/>)
+                    .find(`.${TESTING_CLASS_NAMES.swimlane}`)
+            )
+                .toHaveLength(swimlanes.length)
         })
     })
 })
