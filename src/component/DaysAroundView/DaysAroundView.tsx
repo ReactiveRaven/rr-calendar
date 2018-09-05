@@ -1,8 +1,9 @@
 import * as React from 'react'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
-import Range from '../../utility/range/Range'
+import ClosedRange from '../../utility/range/ClosedRange'
 import {EventFields} from '../EventBlock/EventBlock'
 import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
 
@@ -15,6 +16,7 @@ interface IDaysAroundView {
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 class DaysAroundView extends React.Component<IDaysAroundView, {}> {
@@ -27,53 +29,29 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
             display,
             i18nConfig,
             delegate,
-            events
+            events,
+            renderEvent
         } = this.props
+
+        const dates = ClosedRange.fromTo(-before, after)
+            .asArray()
+            .map(index => makeDate(date, index))
 
         return (
             <React.Fragment>
-                {
-                    Range
-                        .fromToLessThan(0, before)
-                        .asArray()
-                        .reverse()
-                        .map(index => makeDate(date, -(index + 1)))
-                        .map(beforeDate =>
-                            <LargeCalendarDayColumn
-                                date={beforeDate}
-                                display={display}
-                                emphasise={emphasise}
-                                events={events}
-                                key={`before${beforeDate.toISOString()}`}
-                                i18nConfig={i18nConfig}
-                                delegate={delegate}
-                            />
-                        )
-                }
-                <LargeCalendarDayColumn
-                    date={date}
-                    display={display}
-                    emphasise={emphasise}
-                    events={events}
-                    i18nConfig={i18nConfig}
-                    delegate={delegate}
-                />
-                {
-                    Range
-                        .fromToLessThan(0, after)
-                        .asArray()
-                        .map(index => makeDate(date, (index + 1)))
-                        .map(afterDate =>
-                            <LargeCalendarDayColumn
-                                date={afterDate}
-                                display={display}
-                                emphasise={emphasise}
-                                events={events}
-                                key={`after${afterDate.toISOString()}`}
-                                i18nConfig={i18nConfig}
-                                delegate={delegate}
-                            />
-                        )
+                { dates
+                    .map(currentDate =>
+                        <LargeCalendarDayColumn
+                            date={currentDate}
+                            display={display}
+                            emphasise={emphasise}
+                            events={events}
+                            key={currentDate.toISOString()}
+                            i18nConfig={i18nConfig}
+                            delegate={delegate}
+                            renderEvent={renderEvent}
+                        />
+                    )
                 }
             </React.Fragment>
         )

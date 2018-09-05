@@ -1,4 +1,5 @@
 import * as React from 'react'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
@@ -18,6 +19,7 @@ interface IGroupedDaysAroundView {
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> {
@@ -31,7 +33,8 @@ class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> 
             i18nConfig,
             delegate,
             events,
-            swimlaneForEvent
+            swimlaneForEvent,
+            renderEvent
         } = this.props
 
         const swimlanes = calculateSwimlanes(swimlaneForEvent, events)
@@ -53,6 +56,7 @@ class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> 
                                 delegate={delegate}
                                 swimlanes={swimlanes}
                                 swimlaneForEvent={this.swimlaneForEvent}
+                                renderEvent={renderEvent}
                             />
                         ))
                 }

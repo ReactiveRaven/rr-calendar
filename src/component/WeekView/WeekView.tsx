@@ -3,6 +3,7 @@ import * as React from 'react'
 import {CSSProperties} from '../../../node_modules/@material-ui/core/styles/withStyles'
 import {DAYS_IN_WEEK} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
@@ -18,6 +19,7 @@ interface IWeekViewOwnProps {
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 type ClassNames =
@@ -51,7 +53,8 @@ class WeekView extends React.Component<WeekViewProps, {}> {
             display = {},
             weekDayStart = WeekDayStart.Monday,
             i18nConfig = {},
-            delegate = {}
+            delegate = {},
+            renderEvent
         } = this.props
 
         const midnight = new Date(date)
@@ -91,6 +94,7 @@ class WeekView extends React.Component<WeekViewProps, {}> {
                                 events={relevantEvents}
                                 i18nConfig={i18nConfig}
                                 delegate={delegate}
+                                renderEvent={renderEvent}
                             />
                         ))
                 }

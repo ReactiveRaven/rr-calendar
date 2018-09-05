@@ -2,8 +2,10 @@ import {mount} from 'enzyme'
 import * as React from 'react'
 import {DAYS_IN_WEEK, HOURS_IN_DAY} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
+import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import ISwimlane from '../../model/ISwimlane'
+import EventBlock from '../EventBlock/EventBlock'
 import {TESTING_CLASS_NAMES} from '../VerticalSchedulerColumn/VerticalSchedulerColumn'
 import GroupedWeekView from './GroupedWeekView'
 
@@ -149,6 +151,23 @@ describe('GroupedWeekView', () => {
                 .prop('delegate')
         )
             .toBe(delegate)
+    })
+
+    it('should pass renderEvent down properly', () => {
+        const renderEvent: EventRenderer = (options) => <EventBlock {...options} />
+
+        const component = mount(<GroupedWeekView
+            {...defaultProps}
+            renderEvent={renderEvent}
+        />)
+
+        expect(
+            component
+                .find('VerticalSchedulerColumn')
+                .first()
+                .prop('renderEvent')
+        )
+            .toBe(renderEvent)
     })
 
     it('should pass down the correct unitHeights for each swimlane', () => {

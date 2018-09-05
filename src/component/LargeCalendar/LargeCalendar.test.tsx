@@ -1,7 +1,9 @@
 import {mount, shallow} from 'enzyme'
 import * as React from 'react'
+import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import LargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/LargeCalendarViewConfig'
+import EventBlock from '../EventBlock/EventBlock'
 import LargeCalendar from './LargeCalendar'
 
 describe('LargeCalendar', () => {
@@ -85,6 +87,19 @@ describe('LargeCalendar', () => {
             .toBe(delegate)
     })
 
+    it('should pass down renderEvent properly', () => {
+        const renderEvent: EventRenderer = (options) => <EventBlock {...options} />
+
+        const component = mount(<LargeCalendar
+            date={new Date()}
+            events={[]}
+            renderEvent={renderEvent}
+        />)
+
+        expect(component.find('WeekView').first().prop('renderEvent'))
+            .toBe(renderEvent)
+    })
+
     it('should allow changing the view type', () => {
         const component = mount(<LargeCalendar
             date={new Date()}
@@ -107,5 +122,18 @@ describe('LargeCalendar', () => {
 
         expect(component.find('WeekView')).toHaveLength(0)
         expect(component.find('GroupedWeekView')).toHaveLength(1)
+    })
+
+    it('should support grouped day view', () => {
+        const component = mount(<LargeCalendar
+            date={new Date()}
+            events={[]}
+            viewConfig={LargeCalendarViewConfig.groupedDayView({
+                swimlaneForEvent: (event) => event.className,
+            })}
+        />)
+
+        expect(component.find('WeekView')).toHaveLength(0)
+        expect(component.find('GroupedDaysAroundView')).toHaveLength(1)
     })
 })
