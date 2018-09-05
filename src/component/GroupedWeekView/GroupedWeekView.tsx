@@ -3,6 +3,7 @@ import * as React from 'react'
 import {CSSProperties} from '../../../node_modules/@material-ui/core/styles/withStyles'
 import {DAYS_IN_WEEK} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
@@ -21,6 +22,7 @@ interface IGroupedWeekViewOwnProps {
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 type ClassNames =
@@ -56,6 +58,7 @@ class GroupedWeekView extends React.Component<GroupedWeekViewProps, {}> {
             i18nConfig = {},
             delegate = {},
             swimlaneForEvent,
+            renderEvent
         } = this.props
 
         const midnight = new Date(date)
@@ -107,6 +110,7 @@ class GroupedWeekView extends React.Component<GroupedWeekViewProps, {}> {
                                 delegate={delegate}
                                 swimlanes={swimlanes}
                                 swimlaneForEvent={innerSwimlaneForEvent}
+                                renderEvent={renderEvent}
                             />
                         ))
                 }

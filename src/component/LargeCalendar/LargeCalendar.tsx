@@ -1,4 +1,5 @@
 import * as React from 'react'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
@@ -26,6 +27,7 @@ interface ILargeCalendarOwnProps {
     viewConfig?: ILargeCalendarViewConfig
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 export default class LargeCalendar extends React.Component<ILargeCalendarOwnProps, {}> {
@@ -37,45 +39,37 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
             events,
             date,
             i18nConfig,
-            viewConfig = LargeCalendarViewConfig.weekView()
+            viewConfig = LargeCalendarViewConfig.weekView(),
+            renderEvent
         } = this.props
+
+        const sharedProps = {
+            date,
+            delegate,
+            display,
+            emphasise,
+            events,
+            i18nConfig,
+            renderEvent
+        }
 
         if (viewConfig instanceof LargeCalendarWeekViewConfig) {
             return (
-                <WeekView
-                    date={date}
-                    events={events}
-                    display={display}
-                    emphasise={emphasise}
-                    i18nConfig={i18nConfig}
-                    delegate={delegate}
-                />
+                <WeekView {...sharedProps} />
             )
         }
 
         if (viewConfig instanceof LargeCalendarDaysAroundViewConfig) {
             return (
-                <DaysAroundView
-                    date={date}
-                    events={events}
-                    display={display}
-                    emphasise={emphasise}
-                    i18nConfig={i18nConfig}
-                    delegate={delegate}
-                />
+                <DaysAroundView {...sharedProps} />
             )
         }
 
         if (viewConfig instanceof LargeCalendarGroupedWeekViewConfig) {
             return (
                 <GroupedWeekView
+                    {...sharedProps}
                     swimlaneForEvent={viewConfig.swimlaneForEvent}
-                    events={events}
-                    date={date}
-                    display={display}
-                    emphasise={emphasise}
-                    i18nConfig={i18nConfig}
-                    delegate={delegate}
                 />
             )
         }
@@ -84,12 +78,7 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
             return (
                 <GroupedDaysAroundView
                     swimlaneForEvent={viewConfig.swimlaneForEvent}
-                    events={events}
-                    date={date}
-                    display={display}
-                    emphasise={emphasise}
-                    i18nConfig={i18nConfig}
-                    delegate={delegate}
+                    {...sharedProps}
                 />
             )
         }

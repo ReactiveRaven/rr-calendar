@@ -1,56 +1,62 @@
 import {mount} from 'enzyme'
 import * as React from 'react'
+import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import EventBlock from '../EventBlock/EventBlock'
 import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
 import DaysAroundView from './DaysAroundView'
 
 describe('DaysAroundView', () => {
+    const date = new Date()
+    const defaultProps = {
+        date,
+        events: []
+    }
+
     it('should render without crashing', () => {
-        expect(() => mount(<DaysAroundView date={new Date()} events={[]} />)).not.toThrow()
+        expect(() => mount(<DaysAroundView {...defaultProps} />)).not.toThrow()
     })
 
     it('should show the requested number of days before/after the current date', () => {
-        const now = new Date()
-
         expect(
-            mount(<DaysAroundView date={now} events={[]}/>)
+            mount(<DaysAroundView {...defaultProps}/>)
                 .find('LargeCalendarDayColumn')
         )
             .toHaveLength(1)
 
         const beforeAndToday = 2
         expect(
-            mount(<DaysAroundView before={1} date={now} events={[]}/>)
+            mount(<DaysAroundView {...defaultProps} before={1} />)
                 .find('LargeCalendarDayColumn')
         )
             .toHaveLength(beforeAndToday)
 
         const afterAndToday = 2
         expect(
-            mount(<DaysAroundView after={1} date={now} events={[]}/>)
+            mount(<DaysAroundView {...defaultProps} after={1} />)
                 .find('LargeCalendarDayColumn')
         )
             .toHaveLength(afterAndToday)
 
         const beforeAndAfterAndToday = 3
         expect(
-            mount(<DaysAroundView after={1} before={1} date={now} events={[]}/>)
+            mount(<DaysAroundView {...defaultProps} after={1} before={1}/>)
                 .find('LargeCalendarDayColumn')
         )
             .toHaveLength(beforeAndAfterAndToday)
     })
 
     it('should show the correct requested dates', () => {
-        const date = new Date('2000-12-31T23:59:59')
+        const knownDate = new Date('2000-12-31T23:59:59')
 
         const dateStrings = ['Fri29', 'Sat30', 'Sun31', 'Mon1', 'Tue2']
 
         const numAround = 2
         const component = mount(<DaysAroundView
+            {...defaultProps}
             after={numAround}
             before={numAround}
-            date={date}
-            events={[]}
+            date={knownDate}
         />)
 
         expect(
@@ -67,9 +73,8 @@ describe('DaysAroundView', () => {
 
         expect(
             mount(<DaysAroundView
-                date={new Date()}
+                {...defaultProps}
                 emphasise={emphasisObject}
-                events={[]}
             />)
                 .find('LargeCalendarDayColumn')
                 .prop('emphasise')
@@ -82,9 +87,8 @@ describe('DaysAroundView', () => {
 
         expect(
             mount(<DaysAroundView
-                date={new Date()}
+                {...defaultProps}
                 display={displayObject}
-                events={[]}
             />)
                 .find('LargeCalendarDayColumn')
                 .prop('display')
@@ -96,9 +100,7 @@ describe('DaysAroundView', () => {
         const i18nConfig = {}
 
         const component = mount(<DaysAroundView
-            date={new Date()}
-            display={{}}
-            events={[]}
+            {...defaultProps}
             i18nConfig={i18nConfig}
         />)
 
@@ -115,9 +117,7 @@ describe('DaysAroundView', () => {
         const delegate = {}
 
         const component = mount(<DaysAroundView
-            date={new Date()}
-            display={{}}
-            events={[]}
+            {...defaultProps}
             delegate={delegate}
         />)
 
@@ -134,8 +134,7 @@ describe('DaysAroundView', () => {
         const events: IConcreteEvent[] = []
 
         const component = mount(<DaysAroundView
-            date={new Date()}
-            display={{}}
+            {...defaultProps}
             events={events}
         />)
 
@@ -146,5 +145,22 @@ describe('DaysAroundView', () => {
                 .prop('events')
         )
             .toBe(events)
+    })
+
+    it('should pass renderEvent down properly', () => {
+        const renderEvent: EventRenderer = (options) => <EventBlock {...options} />
+
+        const component = mount(<DaysAroundView
+            {...defaultProps}
+            renderEvent={renderEvent}
+        />)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .first()
+                .prop('renderEvent')
+        )
+            .toBe(renderEvent)
     })
 })

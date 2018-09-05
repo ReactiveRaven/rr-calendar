@@ -21,6 +21,7 @@ import { default as _TimeLabel, ITimeLabelProps} from './component/TimeLabel/Tim
 import { default as _WeekDayStart } from './enum/WeekDayStart'
 export { default as IConcreteEvent } from './model/IConcreteEvent'
 import { default as _EventBlock, IEventBlockOwnProps } from './component/EventBlock/EventBlock'
+export { default as EventRenderer } from './model/EventRenderer'
 
 export const DateLabel =
     _DateLabel as React.StatelessComponent<IDateLabelProps>
