@@ -5,6 +5,8 @@ import IConcreteEvent from '../../model/IConcreteEvent'
 import ILargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/ILargeCalendarViewConfig'
 import LargeCalendarDaysAroundViewConfig
     from '../../model/LargeCalendarViewConfig/LargeCalendarDaysAroundViewConfig'
+import LargeCalendarGroupedDaysAroundViewConfig
+    from '../../model/LargeCalendarViewConfig/LargeCalendarGroupedDaysAroundViewConfig'
 import LargeCalendarGroupedWeekViewConfig
     from '../../model/LargeCalendarViewConfig/LargeCalendarGroupedWeekViewConfig'
 import LargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/LargeCalendarViewConfig'
@@ -12,6 +14,7 @@ import LargeCalendarWeekViewConfig
     from '../../model/LargeCalendarViewConfig/LargeCalendarWeekViewConfig'
 import DaysAroundView from '../DaysAroundView/DaysAroundView'
 import {EventFields} from '../EventBlock/EventBlock'
+import GroupedDaysAroundView from '../GroupedDaysAroundView/GroupedDaysAroundView'
 import GroupedWeekView from '../GroupedWeekView/GroupedWeekView'
 import WeekView from '../WeekView/WeekView'
 
@@ -66,6 +69,20 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
         if (viewConfig instanceof LargeCalendarGroupedWeekViewConfig) {
             return (
                 <GroupedWeekView
+                    swimlaneForEvent={viewConfig.swimlaneForEvent}
+                    events={events}
+                    date={date}
+                    display={display}
+                    emphasise={emphasise}
+                    i18nConfig={i18nConfig}
+                    delegate={delegate}
+                />
+            )
+        }
+
+        if (viewConfig instanceof LargeCalendarGroupedDaysAroundViewConfig) {
+            return (
+                <GroupedDaysAroundView
                     swimlaneForEvent={viewConfig.swimlaneForEvent}
                     events={events}
                     date={date}

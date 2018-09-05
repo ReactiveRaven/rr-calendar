@@ -20,9 +20,12 @@ import {
 import { default as _TimeLabel, ITimeLabelProps} from './component/TimeLabel/TimeLabel'
 import { default as _WeekDayStart } from './enum/WeekDayStart'
 export { default as IConcreteEvent } from './model/IConcreteEvent'
+import { default as _EventBlock, IEventBlockOwnProps } from './component/EventBlock/EventBlock'
 
 export const DateLabel =
     _DateLabel as React.StatelessComponent<IDateLabelProps>
+export const EventBlock =
+    _EventBlock as React.StatelessComponent<IEventBlockOwnProps>
 export const LargeCalendar = _LargeCalendar
 export const LargeCalendarDayColumn =
     _LargeCalendarDayColumn as React.StatelessComponent<ILargeCalendarDayColumnProps>
