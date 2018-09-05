@@ -1,3 +1,4 @@
+import {IPositionInfo} from './eventPositioning'
 import NumericallyComparable from './range/NumericallyComparable'
 import Range from './range/Range'
 
@@ -5,7 +6,7 @@ const calculateParallelColumns = <T extends NumericallyComparable>(
     target: Range<T>,
     allRanges: Array<Range<T>>,
     log: boolean = false
-): {columns: number, index: number} => {
+): IPositionInfo => {
     const index = calculateIndexes(target, allRanges).index
 
     const boundaryColumnsMap = calculateBoundariesMap(allRanges)

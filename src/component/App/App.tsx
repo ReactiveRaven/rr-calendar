@@ -3,6 +3,7 @@ import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import WeekDayStart from '../../enum/WeekDayStart'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import LargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/LargeCalendarViewConfig'
 import LargeCalendar from '../LargeCalendar/LargeCalendar'
 import {generateDay} from '../LargeCalendarDayColumn/testData'
 import SmallCalendar from '../SmallCalendar/SmallCalendar'
@@ -27,8 +28,12 @@ type ClassNames =
 
 const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
     theme1: {
+        alignItems: 'center',
         backgroundColor: colors.cyan.A700,
-        color: theme.palette.getContrastText(colors.cyan.A700)
+        color: theme.palette.getContrastText(colors.cyan.A700),
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     },
     theme1A: {
         backgroundColor: colors.cyan.A200,
@@ -83,7 +88,11 @@ class App extends React.Component<AppProps, IAppState> {
         selectedDate: new Date()
     }
 
-    public render() {
+    private readonly exampleEvents: IConcreteEvent[]
+
+    constructor(props: AppProps) {
+        super(props)
+
         const {
             theme1,
             theme1A,
@@ -97,7 +106,7 @@ class App extends React.Component<AppProps, IAppState> {
             theme5A,
             theme6,
             theme6A
-        } = this.props.classes
+        } = props.classes
 
         const eventThemes = [
             [theme1, theme1A],
@@ -108,6 +117,10 @@ class App extends React.Component<AppProps, IAppState> {
             [theme6, theme6A],
         ]
 
+        this.exampleEvents = generateDay(new Date(), eventThemes)
+    }
+
+    public render() {
         return (
             <div className='App'>
                 <div className={'calendar-container'}>
@@ -117,15 +130,30 @@ class App extends React.Component<AppProps, IAppState> {
                         onDateSelected={this.handleSelectDate}
                     />
                 </div>
-                <div style={{ display: 'flex', width: '100%' }}>
+                <div style={{ display: 'flex', width: 'calc(100% - 16px)', margin: 'auto' }}>
                     <div style={{height: '100vh', flexGrow: 1}}>
                         <LargeCalendar
                             date={this.state.selectedDate}
-                            events={generateDay(new Date(), eventThemes)}
+                            events={this.exampleEvents}
                             delegate={{
                                 onHoverEvent: this.handleHoverEvent,
                                 onSelectEvent: this.handleSelectEvent
                             }}
+                        />
+                    </div>
+                </div>
+                <div style={{ display: 'flex', width: 'calc(100% - 16px)', margin: 'auto' }}>
+                    <div style={{height: '100vh', flexGrow: 1}}>
+                        <LargeCalendar
+                            date={this.state.selectedDate}
+                            events={this.exampleEvents}
+                            delegate={{
+                                onHoverEvent: this.handleHoverEvent,
+                                onSelectEvent: this.handleSelectEvent
+                            }}
+                            viewConfig={LargeCalendarViewConfig.groupedWeekView({
+                                swimlaneForEvent: event => event.location!.name
+                            })}
                         />
                     </div>
                 </div>

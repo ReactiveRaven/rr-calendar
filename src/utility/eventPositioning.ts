@@ -3,9 +3,14 @@ const QUARTER = 4
 
 const QUARTER_HOUR = MINUTES_IN_HOUR / QUARTER
 
+export interface IPositionInfo {
+    columns: number
+    index: number
+}
+
 const eventPositioning = (
     event: { end: Date, start: Date },
-    positionInfo: { columns: number, index: number },
+    positionInfo: IPositionInfo,
     date: Date
 ) => {
     const midnight = new Date(date)

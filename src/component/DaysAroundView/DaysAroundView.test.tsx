@@ -1,8 +1,8 @@
 import {mount} from 'enzyme'
 import * as React from 'react'
+import IConcreteEvent from '../../model/IConcreteEvent'
 import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
 import DaysAroundView from './DaysAroundView'
-import IConcreteEvent from '../../model/IConcreteEvent'
 
 describe('DaysAroundView', () => {
     it('should render without crashing', () => {

@@ -7,6 +7,8 @@ import IConcreteEvent from '../../model/IConcreteEvent'
 import PersonPill from '../PersonPill/PersonPill'
 import TimeLabel from '../TimeLabel/TimeLabel'
 
+import FlareIcon from '@material-ui/icons/Brightness1'
+
 export interface IEventBlockOwnProps {
     event: IConcreteEvent
     style?: React.CSSProperties
@@ -119,6 +121,7 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
                         <TimeLabel date={start} formatter={i18nConfig.timeFormatter}/>
                     </div>
                 }
+                <FlareIcon />
                 { this.display('location') &&
                     <div
                         className={cls(

@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import {HOURS_IN_DAY} from '../../constants'
+import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
@@ -12,6 +13,12 @@ import calculateParallelColumns from '../../utility/calculateParallelColumns'
 import eventPositioning from '../../utility/eventPositioning'
 import Range from '../../utility/range/Range'
 import EventBlock, {EventFields} from '../EventBlock/EventBlock'
+
+export const TESTING_CLASS_NAMES = {
+    body: 'large-calendar-day-column-body',
+    header: 'large-calendar-day-column-header',
+    hourCell: 'large-calendar-day-column-cell'
+}
 
 export interface ILargeCalendarDayColumnProps {
     date: Date
@@ -21,6 +28,7 @@ export interface ILargeCalendarDayColumnProps {
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
+    renderEvent?: EventRenderer
 }
 
 type ClassNames =
@@ -31,18 +39,21 @@ type ClassNames =
     | 'headerText'
     | 'root'
 
+const firstChildBorderFix = `&:first-child .${TESTING_CLASS_NAMES.body}`
 
 const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
     body: {
-        background: 'yellow',
-        borderRightColor: theme.palette.grey.A100,
-        borderRightStyle: 'solid',
+        borderBottomWidth: 0,
+        borderColor: theme.palette.grey.A100,
+        borderLeftWidth: 0,
         borderRightWidth: '1px',
+        borderStyle: 'solid',
+        borderTopWidth: 0,
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 9000,
-        position: 'relative',
+        position: 'relative'
     },
     cell: {
         backgroundColor: theme.palette.background.paper,
@@ -67,6 +78,9 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
         color: theme.palette.primary.contrastText
     },
     root: {
+        [firstChildBorderFix]: {
+            borderLeftWidth: '1px'
+        },
         display: 'flex',
         flexDirection: 'column',
         height: '100%'
@@ -75,16 +89,11 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
 
 const defaultWeekDayFormatter = Intl.DateTimeFormat(navigator.language, { weekday: 'short' }).format
 const defaultMonthDayFormatter = Intl.DateTimeFormat(navigator.language, { day: 'numeric' }).format
+const defaultEventRenderer: EventRenderer = (options) => (<EventBlock {...options} />)
 
 export type LargeCalendarDayColumnProps =
     ILargeCalendarDayColumnProps &
     { classes: Record<ClassNames, string> }
-
-export const TESTING_CLASS_NAMES = {
-    body: 'large-calendar-day-column-body',
-    header: 'large-calendar-day-column-header',
-    hourCell: 'large-calendar-day-column-cell'
-}
 
 const cls = (...classes: string[]) => classes.join(' ')
 
@@ -105,7 +114,8 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
             emphasise = {},
             events,
             i18nConfig = {},
-            delegate
+            delegate = {},
+            renderEvent = defaultEventRenderer
         } = this.props
 
         const midnight = new Date(date)
@@ -152,23 +162,20 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                 <div className={column}>
                     { allEvents
                         .map((event, index) =>
-                            <EventBlock
-                                className={event.className}
-                                accentClassName={event.accentClassName}
-                                event={event}
-                                key={`${index}`}
-                                style={eventPositioning(
+                            renderEvent({
+                                delegate,
+                                display,
+                                emphasise,
+                                event,
+                                i18nConfig,
+                                key: `${index}`,
+                                style: eventPositioning(
                                     event,
-                                    columnInfoMap[index],
+                                    columnInfoMap[index]!,
                                     date
-                                )}
-                                emphasise={emphasise}
-                                display={display}
-                                i18nConfig={i18nConfig}
-                                delegate={delegate}
-                            />
+                                ) as CSSProperties
+                            })
                         )
-
                     }
                 </div>
             </div>
