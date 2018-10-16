@@ -45,7 +45,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.4",
     "@types/node": "^10.11.5",
-    "@types/react": "^16.4.16",
+    "@types/react": "^16.4.17",
     "@types/react-dom": "^16.0.8",
     "@types/sinon": "^5.0.2",
     "dts-bundle": "^0.7.3",
