@@ -136,4 +136,15 @@ describe('LargeCalendar', () => {
         expect(component.find('WeekView')).toHaveLength(0)
         expect(component.find('GroupedDaysAroundView')).toHaveLength(1)
     })
+
+    it('should support DaysAround view', () => {
+        const component = mount(<LargeCalendar
+            date={new Date()}
+            events={[]}
+            viewConfig={LargeCalendarViewConfig.daysAroundView({ before: 1, after: 1 })}
+        />)
+
+        expect(component.find('LargeCalendarDayColumn'))
+            .toHaveLength(['before', 'today', 'after'].length)
+    })
 })

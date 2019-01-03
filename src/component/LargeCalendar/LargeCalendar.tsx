@@ -61,7 +61,11 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
 
         if (viewConfig instanceof LargeCalendarDaysAroundViewConfig) {
             return (
-                <DaysAroundView {...sharedProps} />
+                <DaysAroundView
+                    {...sharedProps}
+                    before={viewConfig.before}
+                    after={viewConfig.after}
+                />
             )
         }
 

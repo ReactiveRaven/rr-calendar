@@ -6,6 +6,8 @@ import IConcreteEvent from '../../model/IConcreteEvent'
 import ClosedRange from '../../utility/range/ClosedRange'
 import {EventFields} from '../EventBlock/EventBlock'
 import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {CSSProperties} from '@material-ui/core/styles/withStyles'
 
 interface IDaysAroundView {
     date: Date
@@ -19,11 +21,32 @@ interface IDaysAroundView {
     renderEvent?: EventRenderer
 }
 
-class DaysAroundView extends React.Component<IDaysAroundView, {}> {
+type ClassNames =
+    | 'column'
+    | 'root'
+
+const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+    column: {
+        flexBasis: 0,
+        flexGrow: 1,
+        flexShrink: 1,
+        height: '100%'
+    },
+    root: {
+        display: 'flex',
+        height: '100%',
+        width: '100%'
+    }
+})
+
+type DaysAroundViewProps = IDaysAroundView & WithStyles<typeof styles>
+
+class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
     public render() {
         const {
             after = 0,
             before = 0,
+            classes,
             date,
             emphasise,
             display,
@@ -33,16 +56,19 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
             renderEvent
         } = this.props
 
+        const { column, root } = classes
+
         const dates = ClosedRange.fromTo(-before, after)
             .asArray()
             .map(index => makeDate(date, index))
 
         return (
-            <React.Fragment>
+            <div className={root}>
                 { dates
                     .map(currentDate =>
                         <LargeCalendarDayColumn
                             date={currentDate}
+                            className={column}
                             display={display}
                             emphasise={emphasise}
                             events={events}
@@ -53,7 +79,7 @@ class DaysAroundView extends React.Component<IDaysAroundView, {}> {
                         />
                     )
                 }
-            </React.Fragment>
+            </div>
         )
     }
 }
@@ -65,4 +91,4 @@ const makeDate = (date: Date, dayDifference: number): Date => {
     return newDate
 }
 
-export default DaysAroundView
+export default withStyles(styles)(DaysAroundView)
