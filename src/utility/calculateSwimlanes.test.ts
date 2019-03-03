@@ -11,7 +11,7 @@ describe('calculateSwimlanes', () => {
     })
 
     it('should calculate the correct number of columns for a swimlane', () => {
-        const midnight = new Date()
+        const midnight = new Date('2000-12-31T12:00:00Z')
         midnight.setHours(0, 0, 0, 0)
         const noon = new Date(midnight)
         noon.setHours(HOURS_IN_DAY / HALF)

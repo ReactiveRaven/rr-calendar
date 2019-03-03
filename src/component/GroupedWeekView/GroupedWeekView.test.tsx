@@ -21,7 +21,7 @@ describe('GroupedWeekView', () => {
     const swimlaneForEvent = (event: IConcreteEvent) => event.className
 
     const defaultProps = {
-        date: new Date(),
+        date: new Date('2000-12-31T09:00:00Z'),
         events: [],
         swimlaneForEvent,
         swimlanes
@@ -72,7 +72,6 @@ describe('GroupedWeekView', () => {
 
         const component = mount(<GroupedWeekView
             {...defaultProps}
-            date={new Date()}
             emphasise={emphasisObject}
         />)
 

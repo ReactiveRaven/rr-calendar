@@ -82,14 +82,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T17:30:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
             />)
 
@@ -97,21 +97,23 @@ describe('VerticalSchedulerColumn', () => {
         })
 
         it('should ignore events outside of today', () => {
-            const yesterday = new Date()
-            yesterday.setDate(yesterday.getDate() - 1)
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: yesterday,
+                    end: new Date('2000-12-30T17:30:00Z'),
                     people: [],
-                    start: yesterday
+                    start: new Date('2000-12-30T09:00:00Z')
                 }
             ]
             expect(
                 mount(
-                    <VerticalSchedulerColumn {...defaultProps} date={new Date()} events={events}/>
+                    <VerticalSchedulerColumn
+                        {...defaultProps}
+                        date={new Date('2000-12-31T12:00:00Z')}
+                        events={events}
+                    />
                 )
                     .find('EventBlock')
             )
@@ -125,14 +127,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
                 emphasise={emphasisObject}
             />)
@@ -153,14 +155,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
                 display={displayObject}
             />)
@@ -181,14 +183,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
                 i18nConfig={i18nConfig}
             />)
@@ -209,14 +211,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
                 delegate={delegate}
             />)
@@ -241,14 +243,14 @@ describe('VerticalSchedulerColumn', () => {
                     accentClassName: 'ACCENT_CLASS_NAME',
                     attributes: {},
                     className: 'CLASS_NAME',
-                    end: new Date(),
+                    end: new Date('2000-12-31T17:30:00Z'),
                     people: [],
-                    start: new Date()
+                    start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
             const component = mount(<VerticalSchedulerColumn
                 {...defaultProps}
-                date={new Date()}
+                date={new Date('2000-12-31T12:00:00Z')}
                 events={events}
                 renderEvent={renderer}
             />)

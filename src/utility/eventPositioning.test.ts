@@ -2,12 +2,14 @@ import eventPositioning from './eventPositioning'
 
 // tslint:disable:no-magic-numbers
 describe('eventPositioning', () => {
+    const KNOWN_DATE = new Date('2000-12-31T12:00:00Z')
+
     it('should be a function', () => {
         expect(eventPositioning).toBeInstanceOf(Function)
     })
 
     it('should return positioning within a day as expected', () => {
-        const date = new Date()
+        const date = KNOWN_DATE
         const start = new Date(date)
         start.setHours(0, 0, 0, 0)
         const end = new Date(date)
@@ -34,7 +36,7 @@ describe('eventPositioning', () => {
     })
 
     it('should handle columns properly', () => {
-        const date = new Date()
+        const date = KNOWN_DATE
         const start = new Date(date)
         start.setHours(0, 0, 0, 0)
         const end = new Date(date)
@@ -61,7 +63,7 @@ describe('eventPositioning', () => {
     })
 
     it('should handle events extending outside of the selected date', () => {
-        const date = new Date()
+        const date = KNOWN_DATE
         const start = new Date(date)
         start.setDate(start.getDate() - 1)
         start.setHours(0, 0, 0, 0)
@@ -89,7 +91,7 @@ describe('eventPositioning', () => {
     })
 
     it('should quantise to quarter-hours', () => {
-        const date = new Date()
+        const date = KNOWN_DATE
         const start = new Date(date)
         start.setHours(12, 35, 0, 0)
         const end = new Date(date)

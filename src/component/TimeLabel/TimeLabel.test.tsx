@@ -7,11 +7,11 @@ describe('TimeLabel', () => {
     const NYE_DATE = new Date('2000-12-31T23:59:59')
 
     it('Should render without crashing', () => {
-        expect(() => shallow(<TimeLabel date={new Date()} />)).not.toThrow()
+        expect(() => shallow(<TimeLabel date={NYE_DATE} />)).not.toThrow()
     })
 
     it('should be a span', () => {
-        expect(shallow(<TimeLabel date={new Date()}/>).name()).toEqual('span')
+        expect(shallow(<TimeLabel date={NYE_DATE}/>).name()).toEqual('span')
     })
 
     it('should display the time', () => {

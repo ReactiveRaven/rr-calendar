@@ -200,7 +200,7 @@ describe('SmallCalendar', () => {
                 const after = component.state() as ISmallCalendarState
 
                 expect(after.focusedDate).toBeDefined()
-                const afterDate = after.focusedDate || new Date()
+                const afterDate = after.focusedDate
 
                 const expectedDate = new Date(KNOWN_DATE)
                 expectedDate.setDate(expectedDate.getDate() - 1)
@@ -220,7 +220,7 @@ describe('SmallCalendar', () => {
                 const after = component.state() as ISmallCalendarState
 
                 expect(after.focusedDate).toBeDefined()
-                const afterDate = after.focusedDate || new Date()
+                const afterDate = after.focusedDate
 
                 const expectedDate = new Date(KNOWN_DATE)
                 expectedDate.setDate(expectedDate.getDate() + 1)
@@ -240,7 +240,7 @@ describe('SmallCalendar', () => {
                 const after = component.state() as ISmallCalendarState
 
                 expect(after.focusedDate).toBeDefined()
-                const afterDate = after.focusedDate || new Date()
+                const afterDate = after.focusedDate
 
                 const expectedDate = new Date(KNOWN_DATE)
                 expectedDate.setDate(expectedDate.getDate() - DAYS_IN_WEEK)
@@ -260,7 +260,7 @@ describe('SmallCalendar', () => {
                 const after = component.state() as ISmallCalendarState
 
                 expect(after.focusedDate).toBeDefined()
-                const afterDate = after.focusedDate || new Date()
+                const afterDate = after.focusedDate
 
                 const expectedDate = new Date(KNOWN_DATE)
                 expectedDate.setDate(expectedDate.getDate() + DAYS_IN_WEEK)

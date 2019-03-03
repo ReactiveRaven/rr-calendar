@@ -3,17 +3,38 @@ import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import EventBlock from '../EventBlock/EventBlock'
-import LargeCalendarDayColumn, {TESTING_CLASS_NAMES} from './LargeCalendarDayColumn'
+import LargeCalendarDayColumn, {
+    ILargeCalendarDayColumnProps,
+    TESTING_CLASS_NAMES
+} from './LargeCalendarDayColumn'
 
 describe('LargeCalendarDayColumn', () => {
     const KNOWN_DATE = new Date('2000-12-31T23:59:59Z')
     const weekDayFormatter = Intl.DateTimeFormat('en-GB', { weekday: 'long'}).format
     const monthDayFormatter = Intl.DateTimeFormat('en-GB', { day: '2-digit' }).format
     const classes = Object.freeze({})
-    const defaultProps = { classes, events: [] }
+    let defaultProps: ILargeCalendarDayColumnProps & {classes: object}
+    let exampleEvent: IConcreteEvent
+
+    beforeEach(() => {
+        exampleEvent = {
+            accentClassName: 'ACCENT_CLASS_NAME',
+            attributes: {},
+            className: 'CLASS_NAME',
+            end: new Date('2000-12-31T17:30:00Z'),
+            people: [],
+            start: new Date('2000-12-31T09:00:00Z')
+        };
+
+        defaultProps = {
+            classes,
+            date: KNOWN_DATE,
+            events: [ exampleEvent ]
+        }
+    })
 
     it('should render without crashing', () => {
-        expect(() => shallow(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>))
+        expect(() => shallow(<LargeCalendarDayColumn {...defaultProps}/>))
             .not.toThrow()
     })
 
@@ -70,19 +91,9 @@ describe('LargeCalendarDayColumn', () => {
         })
 
         it('should render events into the body', () => {
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
+            const events: IConcreteEvent[] = [exampleEvent]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
                 events={events}
             />)
 
@@ -90,7 +101,7 @@ describe('LargeCalendarDayColumn', () => {
         })
 
         it('should ignore events outside of today', () => {
-            const yesterday = new Date()
+            const yesterday = new Date(defaultProps.date)
             yesterday.setDate(yesterday.getDate() - 1)
             const events: IConcreteEvent[] = [
                 {
@@ -104,7 +115,7 @@ describe('LargeCalendarDayColumn', () => {
             ]
             expect(
                 mount(
-                    <LargeCalendarDayColumn date={new Date()} events={events}/>
+                    <LargeCalendarDayColumn {...defaultProps} events={events}/>
                 )
                     .find('EventBlock')
             )
@@ -113,20 +124,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should pass emphasise down to events', () => {
             const emphasisObject = {}
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
-                events={events}
                 emphasise={emphasisObject}
             />)
 
@@ -141,20 +140,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should pass display down to events', () => {
             const displayObject = {}
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
-                events={events}
                 display={displayObject}
             />)
 
@@ -169,20 +156,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should pass i18nConfig down to events', () => {
             const i18nConfig = {}
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
-                events={events}
                 i18nConfig={i18nConfig}
             />)
 
@@ -197,20 +172,8 @@ describe('LargeCalendarDayColumn', () => {
 
         it('should pass delegate down to events', () => {
             const delegate = {}
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
-                events={events}
                 delegate={delegate}
             />)
 
@@ -228,21 +191,8 @@ describe('LargeCalendarDayColumn', () => {
             const renderer: EventRenderer = (options) => (
                 <EventBlock {...options} className={overriddenClassName} />
             )
-
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date(),
-                    people: [],
-                    start: new Date()
-                }
-            ]
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                date={new Date()}
-                events={events}
                 renderEvent={renderer}
             />)
 

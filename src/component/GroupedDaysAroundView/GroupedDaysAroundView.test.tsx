@@ -12,7 +12,7 @@ const HALF = 2
 
 describe('GroupedDaysAroundView', () => {
     const swimlaneForEvent = (event: IConcreteEvent): string => event.className
-    const date = new Date()
+    const date = new Date('2000-12-31T09:00:00Z')
     const events: IConcreteEvent[] = []
     const defaultProps = {
         date,
@@ -172,7 +172,7 @@ describe('GroupedDaysAroundView', () => {
     })
 
     it('should pass down the correct unitHeights for each swimlane', () => {
-        const midnight = new Date()
+        const midnight = new Date('2000-12-31T09:00:00Z')
         midnight.setHours(0, 0, 0, 0)
         const noon = new Date(midnight)
         noon.setHours(HOURS_IN_DAY / HALF)
@@ -235,7 +235,7 @@ describe('GroupedDaysAroundView', () => {
     })
 
     it('should correctly map events to their swimlanes', () => {
-        const midnight = new Date()
+        const midnight = new Date('2000-12-31T09:00:00Z')
         midnight.setHours(0, 0, 0, 0)
         const noon = new Date(midnight)
         noon.setHours(HOURS_IN_DAY / HALF)

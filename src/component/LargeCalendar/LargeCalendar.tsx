@@ -19,7 +19,7 @@ import GroupedDaysAroundView from '../GroupedDaysAroundView/GroupedDaysAroundVie
 import GroupedWeekView from '../GroupedWeekView/GroupedWeekView'
 import WeekView from '../WeekView/WeekView'
 
-interface ILargeCalendarOwnProps {
+export interface ILargeCalendarOwnProps {
     date: Date
     events: IConcreteEvent[]
     emphasise?: Partial<Record<EventFields, boolean>>

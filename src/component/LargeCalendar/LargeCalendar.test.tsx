@@ -1,18 +1,30 @@
 import {mount, shallow} from 'enzyme'
 import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
-import IConcreteEvent from '../../model/IConcreteEvent'
 import LargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/LargeCalendarViewConfig'
 import EventBlock from '../EventBlock/EventBlock'
-import LargeCalendar from './LargeCalendar'
+import LargeCalendar, {ILargeCalendarOwnProps} from './LargeCalendar'
 
 describe('LargeCalendar', () => {
+    let defaultProps: ILargeCalendarOwnProps;
+
+    beforeEach(() => {
+        defaultProps = {
+            date: new Date('2000-12-31T09:00:00Z'),
+            events: []
+        }
+    })
+
     it('should render without crashing', () => {
-        expect(() => shallow(<LargeCalendar date={new Date()} events={[]}/>)).not.toThrow()
+        expect(() => shallow(<LargeCalendar
+            {...defaultProps}
+        />)).not.toThrow()
     })
 
     it('should show a WeekView by default', () => {
-        const component = mount(<LargeCalendar date={new Date()} events={[]}/>)
+        const component = mount(<LargeCalendar
+            {...defaultProps}
+        />)
 
         expect(component.find('WeekView')).toHaveLength(1)
     })
@@ -20,8 +32,7 @@ describe('LargeCalendar', () => {
     it('should pass down emphasise key properly', () => {
         const emphasiseObject = {}
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             emphasise={emphasiseObject}
         />)
 
@@ -32,8 +43,7 @@ describe('LargeCalendar', () => {
     it('should pass down display key properly', () => {
         const displayObject = {}
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             display={displayObject}
         />)
 
@@ -42,32 +52,27 @@ describe('LargeCalendar', () => {
     })
 
     it('should pass down date key properly', () => {
-        const date = new Date
         const component = mount(<LargeCalendar
-            date={date}
-            events={[]}
+            {...defaultProps}
         />)
 
         expect(component.find('WeekView').first().prop('date'))
-            .toBe(date)
+            .toBe(defaultProps.date)
     })
 
     it('should pass down events key properly', () => {
-        const events: IConcreteEvent[] = []
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={events}
+            {...defaultProps}
         />)
 
         expect(component.find('WeekView').first().prop('events'))
-            .toBe(events)
+            .toBe(defaultProps.events)
     })
 
     it('should pass down i18nconfig properly', () => {
         const i18nConfig = {}
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             i18nConfig={i18nConfig}
         />)
 
@@ -78,8 +83,7 @@ describe('LargeCalendar', () => {
     it('should pass down delegate properly', () => {
         const delegate = {}
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             delegate={delegate}
         />)
 
@@ -91,8 +95,7 @@ describe('LargeCalendar', () => {
         const renderEvent: EventRenderer = (options) => <EventBlock {...options} />
 
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             renderEvent={renderEvent}
         />)
 
@@ -102,8 +105,7 @@ describe('LargeCalendar', () => {
 
     it('should allow changing the view type', () => {
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             viewConfig={LargeCalendarViewConfig.dayView()}
         />)
 
@@ -113,8 +115,7 @@ describe('LargeCalendar', () => {
 
     it('should support grouped week view', () => {
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             viewConfig={LargeCalendarViewConfig.groupedWeekView({
                 swimlaneForEvent: (event) => event.className,
             })}
@@ -126,8 +127,7 @@ describe('LargeCalendar', () => {
 
     it('should support grouped day view', () => {
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             viewConfig={LargeCalendarViewConfig.groupedDayView({
                 swimlaneForEvent: (event) => event.className,
             })}
@@ -139,8 +139,7 @@ describe('LargeCalendar', () => {
 
     it('should support DaysAround view', () => {
         const component = mount(<LargeCalendar
-            date={new Date()}
-            events={[]}
+            {...defaultProps}
             viewConfig={LargeCalendarViewConfig.daysAroundView({ before: 1, after: 1 })}
         />)
 

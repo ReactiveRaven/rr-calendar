@@ -7,7 +7,7 @@ import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayCol
 import DaysAroundView from './DaysAroundView'
 
 describe('DaysAroundView', () => {
-    const date = new Date()
+    const date = new Date('2000-12-31T12:00:00Z')
     const defaultProps = {
         date,
         events: []
