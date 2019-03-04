@@ -1,3 +1,4 @@
+const HOURS_IN_DAY = 24
 const MINUTES_IN_HOUR = 60
 const QUARTER = 4
 
@@ -22,9 +23,13 @@ const eventPositioning = (
     const { columns, index } = positionInfo
     const start = event.start >= midnight ? event.start : midnight
     const end = event.end < tomorrow ? event.end : tomorrow
-    const quantisedStartHour = (
-        start.getHours() +
-        (Math.round(start.getMinutes() / QUARTER_HOUR) / QUARTER)
+    const quantisedStartHour = Math.max(
+        0,
+        Math.min(
+            HOURS_IN_DAY,
+            start.getHours() +
+                (Math.round(start.getMinutes() / QUARTER_HOUR) / QUARTER)
+        )
     )
     const quantisedEndHour = (
         end.getHours() +
@@ -33,9 +38,9 @@ const eventPositioning = (
     const duration = quantisedEndHour - quantisedStartHour
 
     return {
-        height: `calc(100% / 24 * ${duration})`,
+        height: `calc(100% / ${HOURS_IN_DAY} * ${duration})`,
         left: `calc(2.5% + (95% / ${columns} * ${index}))`,
-        top: `calc(100% / 24 * ${quantisedStartHour})`,
+        top: `calc(100% / ${HOURS_IN_DAY} * ${quantisedStartHour})`,
         width: `calc((95% / ${columns}))`
     }
 }
