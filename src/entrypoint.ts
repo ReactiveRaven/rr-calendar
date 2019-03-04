@@ -24,16 +24,16 @@ import { default as _EventBlock, IEventBlockOwnProps } from './component/EventBl
 export { default as EventRenderer } from './model/EventRenderer'
 
 export const DateLabel =
-    _DateLabel as React.StatelessComponent<IDateLabelProps>
+    _DateLabel as React.FunctionComponent<IDateLabelProps>
 export const EventBlock =
-    _EventBlock as React.StatelessComponent<IEventBlockOwnProps>
+    _EventBlock as React.FunctionComponent<IEventBlockOwnProps>
 export const LargeCalendar = _LargeCalendar
 export const LargeCalendarDayColumn =
-    _LargeCalendarDayColumn as React.StatelessComponent<ILargeCalendarDayColumnProps>
+    _LargeCalendarDayColumn as React.FunctionComponent<ILargeCalendarDayColumnProps>
 export const SmallCalendar =
-    _SmallCalendar as React.StatelessComponent<ISmallCalendarProps>
+    _SmallCalendar as React.FunctionComponent<ISmallCalendarProps>
 export const SmallCalendarDayLabel =
-    _SmallCalendarDayLabel as React.StatelessComponent<SmallCalendarDateLabelProps>
+    _SmallCalendarDayLabel as React.FunctionComponent<SmallCalendarDateLabelProps>
 export const TimeLabel =
-    _TimeLabel as React.StatelessComponent<ITimeLabelProps>
+    _TimeLabel as React.FunctionComponent<ITimeLabelProps>
 export const WeekDayStart = _WeekDayStart

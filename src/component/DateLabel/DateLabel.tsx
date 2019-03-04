@@ -11,7 +11,7 @@ const defaultFormatter = Intl.DateTimeFormat(
     {day: 'numeric'}
 ).format
 
-const DateLabel: React.StatelessComponent<IDateLabelProps> = props => {
+const DateLabel: React.FunctionComponent<IDateLabelProps> = props => {
     const formatter = props.formatter || defaultFormatter
 
     return (

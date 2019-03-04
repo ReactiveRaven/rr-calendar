@@ -6,7 +6,7 @@ import EventBlock from '../EventBlock/EventBlock'
 import LargeCalendar, {ILargeCalendarOwnProps} from './LargeCalendar'
 
 describe('LargeCalendar', () => {
-    let defaultProps: ILargeCalendarOwnProps;
+    let defaultProps: ILargeCalendarOwnProps
 
     beforeEach(() => {
         defaultProps = {

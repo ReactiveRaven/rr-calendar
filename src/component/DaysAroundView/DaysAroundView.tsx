@@ -1,3 +1,5 @@
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
+import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
@@ -6,8 +8,6 @@ import IConcreteEvent from '../../model/IConcreteEvent'
 import ClosedRange from '../../utility/range/ClosedRange'
 import {EventFields} from '../EventBlock/EventBlock'
 import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
-import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
-import {CSSProperties} from '@material-ui/core/styles/withStyles'
 
 interface IDaysAroundView {
     date: Date

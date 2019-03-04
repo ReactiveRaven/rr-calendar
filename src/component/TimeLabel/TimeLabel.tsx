@@ -10,7 +10,7 @@ const defaultFormatter = Intl.DateTimeFormat(
     {hour: '2-digit', minute: '2-digit', hour12: false}
 ).format
 
-const TimeLabel: React.StatelessComponent<ITimeLabelProps> = (props) => {
+const TimeLabel: React.FunctionComponent<ITimeLabelProps> = (props) => {
     const formatter = props.formatter || defaultFormatter
 
     return (

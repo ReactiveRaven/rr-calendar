@@ -24,7 +24,7 @@ describe('LargeCalendarDayColumn', () => {
             end: new Date('2000-12-31T17:30:00Z'),
             people: [],
             start: new Date('2000-12-31T09:00:00Z')
-        };
+        }
 
         defaultProps = {
             classes,
