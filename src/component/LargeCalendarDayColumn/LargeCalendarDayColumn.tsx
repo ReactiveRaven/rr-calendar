@@ -17,7 +17,8 @@ import EventBlock, {EventFields} from '../EventBlock/EventBlock'
 export const TESTING_CLASS_NAMES = {
     body: 'large-calendar-day-column-body',
     header: 'large-calendar-day-column-header',
-    hourCell: 'large-calendar-day-column-cell'
+    hourCell: 'large-calendar-day-column-cell',
+    shade: 'large-calendar-day-column-shade'
 }
 
 export interface ILargeCalendarDayColumnProps {
@@ -38,6 +39,7 @@ type ClassNames =
     | 'header'
     | 'headerText'
     | 'root'
+    | 'shade'
 
 const firstChildBorderFix = `&:first-child .${TESTING_CLASS_NAMES.body}`
 
@@ -85,6 +87,14 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
         flexDirection: 'column',
         height: '100%'
     },
+    shade: {
+        background: 'black',
+        left: 0,
+        opacity: 0.5,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+    }
 })
 
 const defaultWeekDayFormatter = Intl.DateTimeFormat(navigator.language, { weekday: 'short' }).format
@@ -106,6 +116,7 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                 cell,
                 column,
                 root,
+                shade,
                 header,
                 headerText,
             },
@@ -123,6 +134,22 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
         const tomorrow = new Date(midnight)
         tomorrow.setDate(tomorrow.getDate() + 1)
         const timeRange = Range.fromToLessThan(midnight, tomorrow)
+
+        const rightNow = new Date()
+        const columnIsInThePast = rightNow >= timeRange.upper
+        const columnIsCurrent = timeRange.containsValue(rightNow)
+        const shadeHeight = (
+            columnIsInThePast ?
+                '100%' :
+                (columnIsCurrent ?
+                    eventPositioning(
+                        {end: rightNow, start: rightNow},
+                        { columns: 1, index: 0 },
+                        rightNow
+                    ).top :
+                    '0%'
+                )
+        )
 
         const allEvents = events
             .filter(event =>
@@ -152,6 +179,10 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                 </Typography>
             </div>
             <div className={cls(TESTING_CLASS_NAMES.body, body)}>
+                <div
+                    className={cls(TESTING_CLASS_NAMES.shade, shade)}
+                    style={{ height: shadeHeight }}
+                />
                 {
                     Range.fromToLessThan(0, HOURS_IN_DAY).asArray()
                         .map(value => <div

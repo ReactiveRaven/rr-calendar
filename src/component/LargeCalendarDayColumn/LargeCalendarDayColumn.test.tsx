@@ -204,5 +204,50 @@ describe('LargeCalendarDayColumn', () => {
             )
                 .toEqual(overriddenClassName)
         })
+
+        it('should have a shade to highlight the past', () => {
+            const component = mount(<LargeCalendarDayColumn
+                {...defaultProps}
+            />)
+
+            expect(
+                component
+                    .find(`.${TESTING_CLASS_NAMES.shade}`)
+            )
+                .toHaveLength(1)
+        })
+
+        it('should pull the shade down fully when the column is in the past', () => {
+            const component = mount(<LargeCalendarDayColumn
+                {...defaultProps}
+            />)
+
+            expect(
+                component
+                    .find(`.${TESTING_CLASS_NAMES.shade}`)
+                    .first()
+                    .prop('style')!
+                    .height
+            )
+                .toEqual('100%')
+        })
+
+        it('should not pull the shade down when the column is in the future', () => {
+            const future = new Date()
+            future.setDate(future.getDate() + 1)
+            const component = mount(<LargeCalendarDayColumn
+                {...defaultProps}
+                date={future}
+            />)
+
+            expect(
+                component
+                    .find(`.${TESTING_CLASS_NAMES.shade}`)
+                    .first()
+                    .prop('style')!
+                    .height
+            )
+                .toEqual('0%')
+        })
     })
 })
