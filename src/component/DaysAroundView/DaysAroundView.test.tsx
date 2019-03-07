@@ -163,4 +163,28 @@ describe('DaysAroundView', () => {
         )
             .toBe(renderEvent)
     })
+
+    it('should mark columns as alternate', () => {
+        const component = mount(<DaysAroundView
+            {...defaultProps}
+            before={1}
+            after={1}
+        />)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .at(0)
+                .prop('alternate')
+        )
+            .toBe(false)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .at(1)
+                .prop('alternate')
+        )
+            .toBe(true)
+    })
 })

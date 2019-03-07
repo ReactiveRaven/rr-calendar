@@ -156,4 +156,27 @@ describe('WeekView', () => {
         )
             .toBe(renderEvent)
     })
+
+
+    it('should mark columns as alternate', () => {
+        const component = mount(<WeekView
+            {...defaultProps}
+        />)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .at(0)
+                .prop('alternate')
+        )
+            .toBe(false)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .at(1)
+                .prop('alternate')
+        )
+            .toBe(true)
+    })
 })

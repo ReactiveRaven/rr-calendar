@@ -249,5 +249,32 @@ describe('LargeCalendarDayColumn', () => {
             )
                 .toEqual('0%')
         })
+
+        it('should handle having an alternate view', () => {
+            const component = mount(<LargeCalendarDayColumn
+                {...defaultProps}
+                alternate={true}
+            />)
+
+            expect(
+                component
+                    .find(`.${TESTING_CLASS_NAMES.cellAlternate}`)
+                    .first()
+            )
+                .toHaveLength(1)
+        })
+
+        it('should handle having an non-alternate view', () => {
+            const component = mount(<LargeCalendarDayColumn
+                {...defaultProps}
+            />)
+
+            expect(
+                component
+                    .find(`.${TESTING_CLASS_NAMES.cellAlternate}`)
+                    .first()
+            )
+                .toHaveLength(0)
+        })
     })
 })

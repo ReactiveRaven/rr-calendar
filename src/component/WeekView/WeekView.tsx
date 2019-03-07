@@ -40,6 +40,8 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
 
 type WeekViewProps = IWeekViewOwnProps & { classes: Record<ClassNames, string> }
 
+const alternateColumns = 2
+
 class WeekView extends React.Component<WeekViewProps, {}> {
     public render() {
         const {
@@ -84,8 +86,9 @@ class WeekView extends React.Component<WeekViewProps, {}> {
             <div className={root}>
                 {
                     days
-                        .map(columnDate => (
+                        .map((columnDate, index) => (
                             <LargeCalendarDayColumn
+                                alternate={(index % alternateColumns) === 1}
                                 key={`${columnDate}`}
                                 date={columnDate}
                                 className={column}

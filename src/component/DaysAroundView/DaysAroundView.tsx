@@ -41,6 +41,8 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
 
 type DaysAroundViewProps = IDaysAroundView & WithStyles<typeof styles>
 
+const alternateStripes = 2
+
 class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
     public render() {
         const {
@@ -65,8 +67,9 @@ class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
         return (
             <div className={root}>
                 { dates
-                    .map(currentDate =>
+                    .map((currentDate, index) =>
                         <LargeCalendarDayColumn
+                            alternate={(index % alternateStripes) === 1}
                             date={currentDate}
                             className={column}
                             display={display}

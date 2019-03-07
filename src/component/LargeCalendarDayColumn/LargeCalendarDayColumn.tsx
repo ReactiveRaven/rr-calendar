@@ -16,12 +16,14 @@ import EventBlock, {EventFields} from '../EventBlock/EventBlock'
 
 export const TESTING_CLASS_NAMES = {
     body: 'large-calendar-day-column-body',
+    cellAlternate: 'large-calendar-day-column-cell-alternate',
     header: 'large-calendar-day-column-header',
     hourCell: 'large-calendar-day-column-cell',
     shade: 'large-calendar-day-column-shade'
 }
 
 export interface ILargeCalendarDayColumnProps {
+    alternate?: boolean
     date: Date
     events: IConcreteEvent[]
     className?: string
@@ -35,6 +37,7 @@ export interface ILargeCalendarDayColumnProps {
 type ClassNames =
     | 'body'
     | 'cell'
+    | 'cellAlternate'
     | 'column'
     | 'header'
     | 'headerText'
@@ -63,6 +66,10 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
         boxSizing: 'border-box',
         flexGrow: 1,
         width: '100%',
+    },
+    cellAlternate: {
+        backgroundColor: theme.palette.grey.A100,
+        borderBottomColor: theme.palette.background.paper
     },
     column: {
         boxSizing: 'border-box',
@@ -114,6 +121,7 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
             classes: {
                 body,
                 cell,
+                cellAlternate,
                 column,
                 root,
                 shade,
@@ -167,7 +175,12 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
         const weekDayFormatter = i18nConfig.weekDayFormatter || defaultWeekDayFormatter
         const monthDayFormatter = i18nConfig.monthDayFormatter || defaultMonthDayFormatter
 
-        const hourCellClassName = [ TESTING_CLASS_NAMES.hourCell ].join(' ')
+        const hourCellClassFragments = [ TESTING_CLASS_NAMES.hourCell ]
+        if (this.props.alternate) {
+            hourCellClassFragments.push(TESTING_CLASS_NAMES.cellAlternate)
+            hourCellClassFragments.push(cellAlternate)
+        }
+        const hourCellClassName = cls(...hourCellClassFragments)
 
         return <div className={cls(root, className)}>
             <div className={cls(TESTING_CLASS_NAMES.header, header)}>
