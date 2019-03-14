@@ -50,7 +50,7 @@
     "@types/sinon": "^7.0.10",
     "dts-bundle": "^0.7.3",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.10.0",
+    "enzyme-adapter-react-16": "^1.11.1",
     "pascal-case": "^2.0.1",
     "react": "^16.8.4",
     "react-dom": ">=16.4.1 <17.0.0",
