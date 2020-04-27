@@ -46,7 +46,7 @@
     "@types/jest": "^25.1.4",
     "@types/node": "^13.7.7",
     "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
+    "@types/react-dom": "^16.9.7",
     "@types/sinon": "^7.5.2",
     "dts-bundle": "^0.7.3",
     "enzyme": "^3.11.0",
