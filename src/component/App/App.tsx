@@ -121,6 +121,8 @@ class App extends React.Component<AppProps, IAppState> {
     }
 
     public render() {
+        const now = new Date()
+
         return (
             <div className='App'>
                 <div className={'calendar-container'}>
@@ -134,6 +136,7 @@ class App extends React.Component<AppProps, IAppState> {
                     <div style={{height: '100vh', flexGrow: 1}}>
                         <LargeCalendar
                             date={this.state.selectedDate}
+                            now={now}
                             events={this.exampleEvents}
                             delegate={{
                                 onHoverEvent: this.handleHoverEvent,
@@ -146,6 +149,7 @@ class App extends React.Component<AppProps, IAppState> {
                     <div style={{height: '100vh', flexGrow: 1}}>
                         <LargeCalendar
                             date={this.state.selectedDate}
+                            now={now}
                             events={this.exampleEvents}
                             delegate={{
                                 onHoverEvent: this.handleHoverEvent,

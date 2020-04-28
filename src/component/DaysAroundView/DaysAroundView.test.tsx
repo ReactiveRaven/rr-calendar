@@ -11,6 +11,7 @@ describe('DaysAroundView', () => {
     const defaultProps = {
         date,
         events: []
+        now: date
     }
 
     it('should render without crashing', () => {
@@ -186,5 +187,46 @@ describe('DaysAroundView', () => {
                 .prop('alternate')
         )
             .toBe(true)
+    })
+
+    it('should handle timezones', () => {
+        const dateInBST = new Date('2000-06-01T23:59:59+0100')
+        const dateInUTC = new Date('2000-06-01T23:59:59Z')
+
+        const component = mount(<DaysAroundView
+            {...defaultProps}
+            date={dateInBST}
+            now={dateInUTC}
+            before={0}
+            after={0}
+        />)
+
+        expect(
+            component
+                .find('LargeCalendarDayColumn')
+                .first()
+                .find('.large-calendar-day-column-shade')
+                .prop('style')!
+                .height
+        )
+            .toEqual('100%')
+
+        const component2 = mount(<DaysAroundView
+            {...defaultProps}
+            date={dateInUTC}
+            now={dateInBST}
+            before={0}
+            after={0}
+        />)
+
+        expect(
+            component2
+                .find('LargeCalendarDayColumn')
+                .first()
+                .find('.large-calendar-day-column-shade')
+                .prop('style')!
+                .height
+        )
+            .toEqual('0%')
     })
 })

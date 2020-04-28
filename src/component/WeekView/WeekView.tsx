@@ -13,6 +13,7 @@ import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayCo
 
 interface IWeekViewOwnProps {
     date: Date
+    now: Date
     events: IConcreteEvent[]
     weekDayStart?: WeekDayStart
     emphasise?: Partial<Record<EventFields, boolean>>
@@ -50,6 +51,7 @@ class WeekView extends React.Component<WeekViewProps, {}> {
                 root
             },
             date,
+            now,
             events,
             emphasise = {},
             display = {},
@@ -91,6 +93,7 @@ class WeekView extends React.Component<WeekViewProps, {}> {
                                 alternate={(index % alternateColumns) === 1}
                                 key={`${columnDate}`}
                                 date={columnDate}
+                                now={now}
                                 className={column}
                                 emphasise={emphasise}
                                 display={display}

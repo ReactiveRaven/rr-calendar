@@ -29,7 +29,8 @@ describe('LargeCalendarDayColumn', () => {
         defaultProps = {
             classes,
             date: KNOWN_DATE,
-            events: [ exampleEvent ]
+            events: [ exampleEvent ],
+            now: KNOWN_DATE
         }
     })
 
@@ -220,6 +221,7 @@ describe('LargeCalendarDayColumn', () => {
         it('should pull the shade down fully when the column is in the past', () => {
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
+                now={new Date()}
             />)
 
             expect(

@@ -25,6 +25,7 @@ export const TESTING_CLASS_NAMES = {
 export interface ILargeCalendarDayColumnProps {
     alternate?: boolean
     date: Date
+    now: Date
     events: IConcreteEvent[]
     className?: string
     emphasise?: Partial<Record<EventFields, boolean>>
@@ -129,6 +130,7 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                 headerText,
             },
             date,
+            now,
             display = {},
             emphasise = {},
             events,
@@ -143,17 +145,16 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
         tomorrow.setDate(tomorrow.getDate() + 1)
         const timeRange = Range.fromToLessThan(midnight, tomorrow)
 
-        const rightNow = new Date()
-        const columnIsInThePast = rightNow >= timeRange.upper
-        const columnIsCurrent = timeRange.containsValue(rightNow)
+        const columnIsInThePast = now >= timeRange.upper
+        const columnIsCurrent = timeRange.containsValue(now)
         const shadeHeight = (
             columnIsInThePast ?
                 '100%' :
                 (columnIsCurrent ?
                     eventPositioning(
-                        {end: rightNow, start: rightNow},
+                        {end: now, start: now},
                         { columns: 1, index: 0 },
-                        rightNow
+                        now
                     ).top :
                     '0%'
                 )
@@ -185,10 +186,10 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
         return <div className={cls(root, className)}>
             <div className={cls(TESTING_CLASS_NAMES.header, header)}>
                 <Typography variant={'title'} className={headerText}>
-                    {weekDayFormatter(this.props.date)}
+                    {weekDayFormatter(date)}
                 </Typography>
                 <Typography variant={'subheading'} className={headerText}>
-                    {monthDayFormatter(this.props.date)}
+                    {monthDayFormatter(date)}
                 </Typography>
             </div>
             <div className={cls(TESTING_CLASS_NAMES.body, body)}>

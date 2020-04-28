@@ -11,6 +11,7 @@ import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayCo
 
 interface IDaysAroundView {
     date: Date
+    now: Date
     events: IConcreteEvent[]
     before?: number
     after?: number
@@ -50,6 +51,7 @@ class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
             before = 0,
             classes,
             date,
+            now,
             emphasise,
             display,
             i18nConfig,
@@ -71,6 +73,7 @@ class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
                         <LargeCalendarDayColumn
                             alternate={(index % alternateStripes) === 1}
                             date={currentDate}
+                            now={now}
                             className={column}
                             display={display}
                             emphasise={emphasise}

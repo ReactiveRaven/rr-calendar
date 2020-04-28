@@ -21,6 +21,7 @@ import WeekView from '../WeekView/WeekView'
 
 export interface ILargeCalendarOwnProps {
     date: Date
+    now: Date
     events: IConcreteEvent[]
     emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
@@ -38,6 +39,7 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
             emphasise,
             events,
             date,
+            now,
             i18nConfig,
             viewConfig = LargeCalendarViewConfig.weekView(),
             renderEvent
@@ -50,6 +52,7 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
             emphasise,
             events,
             i18nConfig,
+            now,
             renderEvent
         }
 

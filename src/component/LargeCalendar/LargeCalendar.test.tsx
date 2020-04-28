@@ -11,7 +11,8 @@ describe('LargeCalendar', () => {
     beforeEach(() => {
         defaultProps = {
             date: new Date('2000-12-31T09:00:00Z'),
-            events: []
+            events: [],
+            now: new Date('2000-12-31-T09:00:00Z')
         }
     })
 
