@@ -10,7 +10,7 @@ describe('DaysAroundView', () => {
     const date = new Date('2000-12-31T12:00:00Z')
     const defaultProps = {
         date,
-        events: []
+        events: [],
         now: date
     }
 
@@ -190,8 +190,8 @@ describe('DaysAroundView', () => {
     })
 
     it('should handle timezones', () => {
-        const dateInBST = new Date('2000-06-01T23:59:59+0100')
-        const dateInUTC = new Date('2000-06-01T23:59:59Z')
+        const dateInBST = new Date('2000-06-01T23:59:59.000+0100')
+        const dateInUTC = new Date('2000-06-01T23:59:59.000+0000')
 
         const component = mount(<DaysAroundView
             {...defaultProps}
