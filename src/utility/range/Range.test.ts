@@ -78,7 +78,7 @@ describe('Range', () => {
     })
 
     describe('union', () => {
-        it('should return a range that encompases both ranges', () => {
+        it('should return a range that encompasses both ranges', () => {
             const union = Range.fromToLessThan(25, 75)
                 .union(Range.fromToLessThan(50, 100))
             expect(union.lower).toEqual(25)
@@ -98,6 +98,24 @@ describe('Range', () => {
                 Range.fromToLessThan(0, 25)
                     .union(Range.fromToLessThan(75, 100))
             }).toThrow()
+        })
+    })
+
+    describe('intersect', () => {
+        it('should return a range contained by both ranges', () => {
+            expect(
+                Range.fromToLessThan(0, 75)
+                    .intersection(Range.fromToLessThan(25, 100))
+            )
+                .toEqual(Range.fromToLessThan(25, 75))
+        })
+
+        it('should handle exactly equal ranges', () => {
+            expect(
+                Range.fromToLessThan(0, 100)
+                    .intersection(Range.fromToLessThan(0, 100))
+            )
+                .toEqual(Range.fromToLessThan(0, 100))
         })
     })
 

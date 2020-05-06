@@ -1,4 +1,5 @@
 import IRange from './IRange'
+import Range from './Range'
 import NumericallyComparable from './NumericallyComparable'
 
 export default class ClosedRange<T extends NumericallyComparable> implements IRange<T> {
@@ -29,7 +30,7 @@ export default class ClosedRange<T extends NumericallyComparable> implements IRa
         return this.containsValue(range.lower) || this.containsValue(range.upper)
     }
 
-    public union(otherRange: ClosedRange<T>) {
+    public union(otherRange: IRange<T>): IRange<T> {
         if (!this.overlapsRange(otherRange)) {
             throw new Error(
                 `Cannot form union of ${this.toString()} and ${otherRange.toString()}; ` +
@@ -37,10 +38,48 @@ export default class ClosedRange<T extends NumericallyComparable> implements IRa
             )
         }
 
-        return ClosedRange.fromTo(
-            this.lower < otherRange.lower ? this.lower : otherRange.lower,
-            this.upper > otherRange.upper ? this.upper : otherRange.upper
-        )
+        const newLower = this.lower < otherRange.lower ? this.lower : otherRange.lower
+        const newUpper = this.upper > otherRange.upper ? this.upper : otherRange.upper
+
+        if (
+            (
+                otherRange.upper === newUpper &&
+                otherRange.containsValue(newUpper)
+            ) ||
+            (
+                this.upper === newUpper
+            )
+        ) {
+            return ClosedRange.fromTo(newLower, newUpper)
+        } else {
+            return Range.fromToLessThan(newLower, newUpper)
+        }
+    }
+
+    public intersection(otherRange: IRange<T>): IRange<T> {
+        if (!this.overlapsRange(otherRange)) {
+            throw new Error(
+                `Cannot form union of ${this.toString()} and ${otherRange.toString()}; ` +
+                'they do not overlap'
+            )
+        }
+
+        const newLower = this.lower > otherRange.lower ? this.lower : otherRange.lower
+        const newUpper = this.upper < otherRange.upper ? this.upper : otherRange.upper
+
+        if (
+            (
+                otherRange.upper === newUpper &&
+                otherRange.containsValue(newUpper)
+            ) ||
+            (
+                this.upper === newUpper
+            )
+        ) {
+            return ClosedRange.fromTo(newLower, newUpper)
+        } else {
+            return Range.fromToLessThan(newLower, newUpper)
+        }
     }
 
     public asArray = (step: number = 1) => {

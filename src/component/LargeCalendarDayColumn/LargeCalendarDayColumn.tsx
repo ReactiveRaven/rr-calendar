@@ -4,11 +4,13 @@ import {
     StyledComponentProps
 } from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
+import { findTimeZone, getUTCOffset } from 'timezone-support'
 import {HOURS_IN_DAY} from '../../constants'
 import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import {IDateAndTimezone} from '../../model/IDateAndTimezone'
 import calculateParallelColumns from '../../utility/calculateParallelColumns'
 import eventPositioning from '../../utility/eventPositioning'
 import Range from '../../utility/range/Range'
@@ -25,7 +27,7 @@ export const TESTING_CLASS_NAMES = {
 export interface ILargeCalendarDayColumnProps {
     alternate?: boolean
     date: Date
-    now: Date
+    now: IDateAndTimezone
     events: IConcreteEvent[]
     className?: string
     emphasise?: Partial<Record<EventFields, boolean>>
@@ -115,6 +117,19 @@ export type LargeCalendarDayColumnProps =
 
 const cls = (...classes: string[]) => classes.join(' ')
 
+const calculateOffset = (now?: IDateAndTimezone): number => {
+    const date = now?.date ?? new Date()
+    try {
+        return getUTCOffset(
+            date,
+            findTimeZone(now?.timezone ?? '')
+        )
+            .offset
+    } catch (e) {
+        return date.getTimezoneOffset()
+    }
+}
+
 class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps, {}> {
     public render() {
         const {
@@ -139,23 +154,25 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
             renderEvent = defaultEventRenderer
         } = this.props
 
+        const utcOffset = calculateOffset(now)
         const midnight = new Date(date)
-        midnight.setHours(0, 0, 0, 0)
+        midnight.setHours(0, utcOffset, 0, 0)
         const tomorrow = new Date(midnight)
         tomorrow.setDate(tomorrow.getDate() + 1)
         const timeRange = Range.fromToLessThan(midnight, tomorrow)
 
-        const columnIsInThePast = now >= timeRange.upper
-        const columnIsCurrent = timeRange.containsValue(now)
+        const columnIsInThePast = now.date >= timeRange.upper
+        const columnIsCurrent = timeRange.containsValue(now.date)
         const shadeHeight = (
             columnIsInThePast ?
                 '100%' :
                 (columnIsCurrent ?
-                    eventPositioning(
-                        {end: now, start: now},
-                        { columns: 1, index: 0 },
-                        now
-                    ).top :
+                    eventPositioning({
+                        columns: 1,
+                        event: Range.fromToLessThan(now.date, now.date),
+                        index: 0,
+                        range: timeRange
+                    }).top :
                     '0%'
                 )
         )
@@ -214,11 +231,11 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                                 event,
                                 i18nConfig,
                                 key: `${index}`,
-                                style: eventPositioning(
-                                    event,
-                                    columnInfoMap[index]!,
-                                    date
-                                ) as CSSProperties
+                                style: eventPositioning({
+                                    ...columnInfoMap[index]!,
+                                    event: Range.fromToLessThan(event.start, event.end),
+                                    range: Range.fromToLessThan(midnight, tomorrow)
+                                }) as CSSProperties
                             })
                         )
                     }

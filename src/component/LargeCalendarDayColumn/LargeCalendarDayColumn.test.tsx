@@ -30,7 +30,7 @@ describe('LargeCalendarDayColumn', () => {
             classes,
             date: KNOWN_DATE,
             events: [ exampleEvent ],
-            now: KNOWN_DATE
+            now: { date: KNOWN_DATE, timezone: 'UTC' }
         }
     })
 
@@ -221,7 +221,10 @@ describe('LargeCalendarDayColumn', () => {
         it('should pull the shade down fully when the column is in the past', () => {
             const component = mount(<LargeCalendarDayColumn
                 {...defaultProps}
-                now={new Date()}
+                now={{
+                    date: new Date(),
+                    timezone: 'UTC'
+                }}
             />)
 
             expect(

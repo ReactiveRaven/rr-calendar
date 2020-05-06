@@ -11,7 +11,7 @@ describe('DaysAroundView', () => {
     const defaultProps = {
         date,
         events: [],
-        now: date
+        now: { date, timezone: 'UTC' }
     }
 
     it('should render without crashing', () => {
@@ -190,13 +190,12 @@ describe('DaysAroundView', () => {
     })
 
     it('should handle timezones', () => {
-        const dateInBST = new Date('2000-06-01T23:59:59.000+0100')
-        const dateInUTC = new Date('2000-06-01T23:59:59.000+0000')
+        const edgeDate = new Date('2000-12-31T23:59:59Z')
 
         const component = mount(<DaysAroundView
             {...defaultProps}
-            date={dateInBST}
-            now={dateInUTC}
+            date={edgeDate}
+            now={{date: edgeDate, timezone: 'Europe/Madrid'}}
             before={0}
             after={0}
         />)
@@ -213,8 +212,8 @@ describe('DaysAroundView', () => {
 
         const component2 = mount(<DaysAroundView
             {...defaultProps}
-            date={dateInUTC}
-            now={dateInBST}
+            date={edgeDate}
+            now={{date: edgeDate, timezone: 'UTC'}}
             before={0}
             after={0}
         />)
@@ -227,6 +226,6 @@ describe('DaysAroundView', () => {
                 .prop('style')!
                 .height
         )
-            .toEqual('0%')
+            .toEqual('calc(100% / 24 * 0)')
     })
 })

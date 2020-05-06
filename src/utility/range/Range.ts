@@ -1,3 +1,4 @@
+import ClosedRange from './ClosedRange'
 import IRange from './IRange'
 import NumericallyComparable from './NumericallyComparable'
 
@@ -32,14 +33,14 @@ export default class Range<T extends NumericallyComparable> implements IRange<T>
         return value >= this.lower && value < this.upper
     }
 
-    public containsRange(otherRange: IRange<T>) {
+    public containsRange(otherRange: IRange<T>): boolean {
         return (
             this.containsValue(otherRange.lower) &&
             (
                 this.containsValue(otherRange.upper) ||
                 (
-                    otherRange instanceof Range &&
-                    otherRange.upper === this.upper
+                    this.upper === otherRange.upper &&
+                    !otherRange.containsValue(otherRange.upper)
                 )
             )
         )
@@ -52,7 +53,7 @@ export default class Range<T extends NumericallyComparable> implements IRange<T>
         )
     }
 
-    public union(otherRange: Range<T>) {
+    public union(otherRange: Range<T>): IRange<T> {
         if (!this.overlapsRange(otherRange)) {
             throw new Error(
                 `Cannot form union of ${this.toString()} and ${otherRange.toString()}; ` +
@@ -60,10 +61,32 @@ export default class Range<T extends NumericallyComparable> implements IRange<T>
             )
         }
 
-        return Range.fromToLessThan(
-            this.lower < otherRange.lower ? this.lower : otherRange.lower,
-            this.upper > otherRange.upper ? this.upper : otherRange.upper,
-        )
+        const newLower = this.lower < otherRange.lower ? this.lower : otherRange.lower
+        const newUpper = this.upper > otherRange.upper ? this.upper : otherRange.upper
+
+        if (otherRange.containsValue(newUpper)) {
+            return ClosedRange.fromTo(newLower, newUpper)
+        } else {
+            return Range.fromToLessThan(newLower, newUpper)
+        }
+    }
+
+    public intersection(otherRange: Range<T>): IRange<T> {
+        if (!this.overlapsRange(otherRange)) {
+            throw new Error(
+                `Cannot form intersection of ${this.toString()} and ${otherRange.toString()}; ` +
+                    'they do not overlap'
+            )
+        }
+
+        const newLower = this.lower > otherRange.lower ? this.lower : otherRange.lower
+        const newUpper = this.upper < otherRange.upper ? this.upper : otherRange.upper
+
+        if (newUpper === otherRange.upper && otherRange.containsValue(newUpper)) {
+            return ClosedRange.fromTo(newLower, newUpper)
+        }
+
+        return Range.fromToLessThan(newLower, newUpper)
     }
 
     public asArray(stepOrMilliseconds: number = 1): T[] {

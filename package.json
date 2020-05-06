@@ -17,7 +17,8 @@
   },
   "types": "lib/entrypoint.d.ts",
   "dependencies": {
-    "keyboardevent-key-polyfill": "^1.1.0"
+    "keyboardevent-key-polyfill": "^1.1.0",
+    "timezone-support": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",

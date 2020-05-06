@@ -5,13 +5,14 @@ import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import {IDateAndTimezone} from '../../model/IDateAndTimezone'
 import ClosedRange from '../../utility/range/ClosedRange'
 import {EventFields} from '../EventBlock/EventBlock'
 import LargeCalendarDayColumn from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
 
 interface IDaysAroundView {
     date: Date
-    now: Date
+    now: IDateAndTimezone
     events: IConcreteEvent[]
     before?: number
     after?: number

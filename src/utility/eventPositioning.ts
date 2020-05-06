@@ -1,41 +1,44 @@
+import IRange from './range/IRange'
+
 const HOURS_IN_DAY = 24
 const MINUTES_IN_HOUR = 60
+const SECONDS_IN_MINUTE = 60
+const MILLISECONDS_IN_SECOND = 1000
 const QUARTER = 4
 
 const QUARTER_HOUR = MINUTES_IN_HOUR / QUARTER
+const MILLISECONDS_IN_HOUR = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR
 
 export interface IPositionInfo {
     columns: number
+    event: IRange<Date>
     index: number
+    range: IRange<Date>
 }
 
 const eventPositioning = (
-    event: { end: Date, start: Date },
-    positionInfo: IPositionInfo,
-    date: Date
+    {
+        columns,
+        event,
+        index,
+        range
+    }: IPositionInfo
 ) => {
-    const midnight = new Date(date)
-    midnight.setHours(0, 0, 0, 0)
-    const tomorrow = new Date(midnight)
-    tomorrow.setDate(midnight.getDate() + 1)
-    tomorrow.setMilliseconds(-1)
+    const intersectedEvent = event.intersection(range)
 
-    const { columns, index } = positionInfo
-    const start = event.start >= midnight ? event.start : midnight
-    const end = event.end < tomorrow ? event.end : tomorrow
+    const start = quantiseQuarterHour(intersectedEvent.lower)
+    const end = quantiseQuarterHour(intersectedEvent.upper)
     const quantisedStartHour = Math.max(
         0,
         Math.min(
             HOURS_IN_DAY,
-            start.getHours() +
-                (Math.round(start.getMinutes() / QUARTER_HOUR) / QUARTER)
+            start.getHours() + (start.getMinutes() / MINUTES_IN_HOUR)
         )
     )
-    const quantisedEndHour = (
-        end.getHours() +
-        (Math.round(end.getMinutes() / QUARTER_HOUR) / QUARTER)
+    const duration = Math.min(
+        (end.getTime() - start.getTime()) / MILLISECONDS_IN_HOUR,
+        HOURS_IN_DAY
     )
-    const duration = quantisedEndHour - quantisedStartHour
 
     return {
         height: `calc(100% / ${HOURS_IN_DAY} * ${duration})`,
@@ -44,5 +47,15 @@ const eventPositioning = (
         width: `calc((95% / ${columns}))`
     }
 }
+
+const quantiseMinutes = (minutes: number) => (date: Date): Date => {
+    const clone = new Date(date.getTime())
+    clone.setMinutes(quantise(clone.getMinutes(), minutes), 0, 0)
+    return clone
+}
+
+const quantiseQuarterHour = quantiseMinutes(QUARTER_HOUR)
+
+export const quantise = (input: number, multiple: number) => Math.round(input / multiple) * multiple
 
 export default eventPositioning

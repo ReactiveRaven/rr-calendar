@@ -82,8 +82,11 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
         weekStartsOn: WeekDayStart.Monday,
     }
 
-    public componentWillReceiveProps(nextProps: SmallCalendarProps) {
-        if (nextProps.selectedDate !== this.props.selectedDate) {
+    public componentDidUpdate(
+        prevProps: Readonly<SmallCalendarProps>,
+        prevState: Readonly<ISmallCalendarState>
+    ): void {
+        if (this.props.selectedDate !== prevProps.selectedDate) {
             this.setState({
                 focusedDate: undefined
             })

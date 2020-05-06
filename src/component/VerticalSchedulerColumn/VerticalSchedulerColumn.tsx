@@ -242,11 +242,14 @@ class VerticalSchedulerColumn
                                                 event,
                                                 i18nConfig,
                                                 key: `${swimlane.label}:${index}`,
-                                                style: this.correctPositioning(eventPositioning(
-                                                    event,
-                                                    columnInfoMap.get(event)!,
-                                                    date
-                                                )) as CSSProperties
+                                                style: this.correctPositioning(eventPositioning({
+                                                    ...columnInfoMap.get(event)!,
+                                                    event: Range.fromToLessThan(
+                                                        event.start,
+                                                        event.end
+                                                    ),
+                                                    range: displayRange
+                                                })) as CSSProperties
                                             })
                                         )
                                     }
