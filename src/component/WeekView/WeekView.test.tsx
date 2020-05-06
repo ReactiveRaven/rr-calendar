@@ -13,7 +13,7 @@ describe('WeekView', () => {
     const defaultProps = {
         date,
         events: [],
-        now: date
+        now: { date, timezone: 'UTC' }
     }
 
     it('should render without crashing', () => {

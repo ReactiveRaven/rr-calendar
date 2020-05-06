@@ -7,8 +7,8 @@ import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import ISwimlane from '../../model/ISwimlane'
-import calculateParallelColumns from '../../utility/calculateParallelColumns'
-import eventPositioning, {IPositionInfo} from '../../utility/eventPositioning'
+import calculateParallelColumns, {IPositionInfoPartial} from '../../utility/calculateParallelColumns'
+import eventPositioning from '../../utility/eventPositioning'
 import Range from '../../utility/range/Range'
 import EventBlock, {EventFields} from '../EventBlock/EventBlock'
 
@@ -203,7 +203,7 @@ class VerticalSchedulerColumn
                     map.set(event, calculateParallelColumns(range, otherRanges))
                     return map
                 },
-                new Map<IConcreteEvent, IPositionInfo>()
+                new Map<IConcreteEvent, IPositionInfoPartial>()
             )
 
         return (

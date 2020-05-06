@@ -12,7 +12,7 @@ describe('LargeCalendar', () => {
         defaultProps = {
             date: new Date('2000-12-31T09:00:00Z'),
             events: [],
-            now: new Date('2000-12-31-T09:00:00Z')
+            now: { date: new Date('2000-12-31-T09:00:00Z'), timezone: 'UTC' }
         }
     })
 

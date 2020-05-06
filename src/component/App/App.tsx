@@ -121,7 +121,7 @@ class App extends React.Component<AppProps, IAppState> {
     }
 
     public render() {
-        const now = new Date()
+        const now = { date: new Date(), timezone: 'UTC' }
 
         return (
             <div className='App'>

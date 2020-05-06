@@ -2,11 +2,13 @@ import {IPositionInfo} from './eventPositioning'
 import NumericallyComparable from './range/NumericallyComparable'
 import Range from './range/Range'
 
+export type IPositionInfoPartial = Pick<IPositionInfo, 'columns' | 'index'>
+
 const calculateParallelColumns = <T extends NumericallyComparable>(
     target: Range<T>,
     allRanges: Array<Range<T>>,
     log: boolean = false
-): IPositionInfo => {
+): IPositionInfoPartial => {
     const index = calculateIndexes(target, allRanges).index
 
     const boundaryColumnsMap = calculateBoundariesMap(allRanges)
@@ -78,7 +80,10 @@ const overlapFilter = <T extends NumericallyComparable>(
         previousRange = currentRange
         currentRange = allRanges
             .filter(other => currentRange.overlapsRange(other))
-            .reduce((a, b) => a.union(b), currentRange)
+            .reduce((a, b) => {
+                const c = a.union(b)
+                return Range.fromToLessThan(c.lower, c.upper)
+            }, currentRange)
     }
 
     const results = allRanges.filter(other => currentRange.overlapsRange(other))

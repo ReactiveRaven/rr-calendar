@@ -18,10 +18,11 @@ import {EventFields} from '../EventBlock/EventBlock'
 import GroupedDaysAroundView from '../GroupedDaysAroundView/GroupedDaysAroundView'
 import GroupedWeekView from '../GroupedWeekView/GroupedWeekView'
 import WeekView from '../WeekView/WeekView'
+import {IDateAndTimezone} from '../../model/IDateAndTimezone'
 
 export interface ILargeCalendarOwnProps {
     date: Date
-    now: Date
+    now: IDateAndTimezone
     events: IConcreteEvent[]
     emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
