@@ -53,7 +53,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "pascal-case": "^3.1.1",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-dom": ">=16.4.1 <17.0.0",
     "react-scripts-ts": "3.1.0",
     "sinon": "^9.2.1",
