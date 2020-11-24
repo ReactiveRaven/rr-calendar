@@ -8,6 +8,9 @@
     "material-ui"
   ],
   "version": "1.0.1",
+  "engines": {
+    "node": ">=10 <15"
+  },
   "private": false,
   "license": "MIT",
   "main": "lib/entrypoint.js",
