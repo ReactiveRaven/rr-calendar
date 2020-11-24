@@ -136,12 +136,7 @@
       "json",
       "node",
       "mjs"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "/app/tsconfig.test.json"
-      }
-    }
+    ]
   },
   "babel": {
     "presets": [
