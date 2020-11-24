@@ -3,6 +3,7 @@ import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
+import {IDateAndTimezone} from '../../model/IDateAndTimezone'
 import ILargeCalendarViewConfig from '../../model/LargeCalendarViewConfig/ILargeCalendarViewConfig'
 import LargeCalendarDaysAroundViewConfig
     from '../../model/LargeCalendarViewConfig/LargeCalendarDaysAroundViewConfig'
@@ -18,7 +19,6 @@ import {EventFields} from '../EventBlock/EventBlock'
 import GroupedDaysAroundView from '../GroupedDaysAroundView/GroupedDaysAroundView'
 import GroupedWeekView from '../GroupedWeekView/GroupedWeekView'
 import WeekView from '../WeekView/WeekView'
-import {IDateAndTimezone} from '../../model/IDateAndTimezone'
 
 export interface ILargeCalendarOwnProps {
     date: Date

@@ -1,6 +1,6 @@
 import IRange from './IRange'
-import Range from './Range'
 import NumericallyComparable from './NumericallyComparable'
+import Range from './Range'
 
 export default class ClosedRange<T extends NumericallyComparable> implements IRange<T> {
     public static fromTo<T extends NumericallyComparable>(lower: T, upper: T): ClosedRange<T> {
