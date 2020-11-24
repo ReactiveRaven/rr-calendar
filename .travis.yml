@@ -1,4 +1,4 @@
-script: npm test && npm run build
+script: npm run build
 
 language: node_js
 node_js:
