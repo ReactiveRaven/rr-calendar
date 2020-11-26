@@ -24,15 +24,15 @@
     "timezone-support": "^2.0.2"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "react-scripts start",
     "build": "npm run clean && npm run test:once && npm run build:lib && npm run build:umd",
     "build:lib": "./node_modules/.bin/tsc --outDir lib --module commonjs",
     "build:es": "./node_modules/.bin/tsc --outDir es --module es2015",
     "build:umd": "npm run build:es && dts-bundle --name dist/bundle --main es --outputAsModuleFolder",
     "clean": "rimraf dist es lib coverage",
-    "test": "react-scripts-ts test --env=jsdom",
-    "test:once": "CI=true react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
+    "test": "react-scripts test --env=jsdom",
+    "test:once": "CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
     "postbuild": "rimraf {lib,es}/**/__tests__ {lib,es}/**/*.{spec,test}.{js,d.ts,js.map}"
   },
   "peerDependencies": {
