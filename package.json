@@ -69,7 +69,8 @@
     "clean": "rimraf dist es lib coverage",
     "test": "node scripts/test.js --env=jsdom",
     "test:once": "CI=true node scripts/test.js --env=jsdom",
-    "postbuild": "rimraf {lib,es}/**/__tests__ {lib,es}/**/*.{spec,test}.{js,d.ts,js.map}"
+    "postbuild": "rimraf {lib,es}/**/__tests__ {lib,es}/**/*.{spec,test}.{js,d.ts,js.map}",
+    "ci": "npm run build && node scripts/dev-test.js"
   },
   "peerDependencies": {
     "@material-ui/core": ">=1.4.3 <4.0.0",
