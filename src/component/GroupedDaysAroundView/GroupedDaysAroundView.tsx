@@ -49,14 +49,14 @@ class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> 
                             <VerticalSchedulerColumn
                                 date={mappedDate}
                                 display={display}
+                                delegate={delegate}
                                 emphasise={emphasise}
                                 events={events}
-                                key={`${mappedDate.toISOString()}`}
                                 i18nConfig={i18nConfig}
-                                delegate={delegate}
+                                key={`${mappedDate.toISOString()}`}
+                                renderEvent={renderEvent}
                                 swimlanes={swimlanes}
                                 swimlaneForEvent={this.swimlaneForEvent}
-                                renderEvent={renderEvent}
                             />
                         ))
                 }
