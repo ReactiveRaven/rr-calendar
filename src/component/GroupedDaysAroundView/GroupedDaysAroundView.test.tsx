@@ -15,6 +15,10 @@ describe('GroupedDaysAroundView', () => {
     const date = new Date('2000-12-31T09:00:00Z')
     const events: IConcreteEvent[] = []
     const defaultProps = {
+        classes: {
+            column: 'column',
+            root: 'root'
+        },
         date,
         events,
         swimlaneForEvent
