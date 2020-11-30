@@ -1,3 +1,5 @@
+import {createStyles, Theme, withStyles} from '@material-ui/core'
+import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
@@ -22,11 +24,33 @@ interface IGroupedDaysAroundView {
     renderEvent?: EventRenderer
 }
 
-class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> {
+type ClassNames =
+    | 'column'
+    | 'root'
+
+const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+    column: {
+        flexGrow: 1,
+        height: '100%'
+    },
+    root: {
+        display: 'flex',
+        height: '100%',
+        width: '100%'
+    }
+})
+
+type GroupedWeekViewProps = IGroupedDaysAroundView & { classes: Record<ClassNames, string> }
+
+class GroupedDaysAroundView extends React.Component<GroupedWeekViewProps, {}> {
     public render() {
         const {
             after = 0,
             before = 0,
+            classes: {
+                column,
+                root
+            },
             date,
             emphasise,
             display,
@@ -40,13 +64,14 @@ class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> 
         const swimlanes = calculateSwimlanes(swimlaneForEvent, events)
 
         return (
-            <React.Fragment>
+            <div className={root}>
                 {
                     ClosedRange.fromTo(-before, after)
                         .asArray()
                         .map(index => makeDate(date, index))
                         .map(mappedDate => (
                             <VerticalSchedulerColumn
+                                className={column}
                                 date={mappedDate}
                                 display={display}
                                 delegate={delegate}
@@ -60,7 +85,7 @@ class GroupedDaysAroundView extends React.Component<IGroupedDaysAroundView, {}> 
                             />
                         ))
                 }
-            </React.Fragment>
+            </div>
         )
     }
 
@@ -77,4 +102,4 @@ const makeDate = (date: Date, dayDifference: number): Date => {
     return newDate
 }
 
-export default GroupedDaysAroundView
+export default withStyles(styles)(GroupedDaysAroundView)
