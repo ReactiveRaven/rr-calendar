@@ -85,8 +85,10 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
         if (viewConfig instanceof LargeCalendarGroupedDaysAroundViewConfig) {
             return (
                 <GroupedDaysAroundView
-                    swimlaneForEvent={viewConfig.swimlaneForEvent}
                     {...sharedProps}
+                    swimlaneForEvent={viewConfig.swimlaneForEvent}
+                    before={viewConfig.before}
+                    after={viewConfig.after}
                 />
             )
         }

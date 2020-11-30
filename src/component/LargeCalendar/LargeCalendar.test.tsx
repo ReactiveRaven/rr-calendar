@@ -136,6 +136,8 @@ describe('LargeCalendar', () => {
 
         expect(component.find('WeekView')).toHaveLength(0)
         expect(component.find('GroupedDaysAroundView')).toHaveLength(1)
+        expect(component.find('GroupedDaysAroundView').first().prop('after')).toEqual(0)
+        expect(component.find('GroupedDaysAroundView').first().prop('before')).toEqual(0)
     })
 
     it('should support DaysAround view', () => {
@@ -146,5 +148,23 @@ describe('LargeCalendar', () => {
 
         expect(component.find('LargeCalendarDayColumn'))
             .toHaveLength(['before', 'today', 'after'].length)
+    })
+
+    it('should support grouped DaysAround view', () => {
+        const after = 1
+        const before = 1
+        const component = mount(<LargeCalendar
+            {...defaultProps}
+            viewConfig={LargeCalendarViewConfig.groupedDaysAroundView({
+                after,
+                before,
+                swimlaneForEvent: (event) => event.className,
+            })}
+        />)
+
+        expect(component.find('WeekView')).toHaveLength(0)
+        expect(component.find('GroupedDaysAroundView')).toHaveLength(1)
+        expect(component.find('GroupedDaysAroundView').first().prop('after')).toEqual(1)
+        expect(component.find('GroupedDaysAroundView').first().prop('before')).toEqual(1)
     })
 })
