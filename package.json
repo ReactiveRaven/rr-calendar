@@ -84,7 +84,7 @@
     "@material-ui/icons": "^3.0.2",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^26.0.16",
     "@types/node": "^14.14.10",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^17.0.0",
