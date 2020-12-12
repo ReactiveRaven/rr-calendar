@@ -1,5 +1,4 @@
-import { createStyles, Overwrite, Theme, withStyles } from '@material-ui/core'
-import { CSSProperties, StyledComponentProps } from '@material-ui/core/styles/withStyles'
+import { createStyles, Theme, withStyles } from '@material-ui/core'
 import * as React from 'react'
 
 export interface ISmallCalendarDateLabelProps {
@@ -20,7 +19,7 @@ type ClassNames =
     | 'root'
 
 const shadowElevation = 4
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+const styles = (theme: Theme) => createStyles<ClassNames, {}>({
     active: {
         backgroundColor: theme.palette.primary.main
     },
@@ -102,11 +101,6 @@ class  SmallCalendarDateLabel extends React.PureComponent<SmallCalendarDateLabel
 
 export const undecorated = SmallCalendarDateLabel
 
-const decorated: React.ComponentType<
-    Overwrite<
-        ISmallCalendarDateLabelProps,
-        StyledComponentProps<ClassNames>
-    >
-> = withStyles(styles)(SmallCalendarDateLabel)
+const decorated = withStyles(styles)(SmallCalendarDateLabel)
 
 export default decorated

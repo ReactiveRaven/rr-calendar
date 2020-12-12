@@ -7,7 +7,6 @@ const calculateSwimlanes = (
     swimlaneForEvent: (event: IConcreteEvent) => string,
     events: IConcreteEvent[]
 ): ISwimlane[] => {
-
     const swimlaneEventMap = events.reduce(
         (map, event) => {
             const swimlaneName = swimlaneForEvent(event)

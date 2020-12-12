@@ -5,7 +5,7 @@ import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import ISwimlane from '../../model/ISwimlane'
 import EventBlock from '../EventBlock/EventBlock'
-import {TESTING_CLASS_NAMES} from '../VerticalSchedulerColumn/VerticalSchedulerColumn'
+import TESTING_CLASS_NAMES from '../VerticalSchedulerColumn/TESTING_CLASS_NAMES'
 import GroupedDaysAroundView from './GroupedDaysAroundView'
 
 const HALF = 2
@@ -73,20 +73,6 @@ describe('GroupedDaysAroundView', () => {
                 .map(wrapper => wrapper.text())
         )
             .toEqual(dateStrings)
-    })
-
-    it('should pass emphasise key down as expected', () => {
-        const emphasisObject = {}
-
-        expect(
-            mount(<GroupedDaysAroundView
-                {...defaultProps}
-                emphasise={emphasisObject}
-            />)
-                .find('VerticalSchedulerColumn')
-                .prop('emphasise')
-        )
-            .toBe(emphasisObject)
     })
 
     it('should pass display key down as expected', () => {
@@ -182,34 +168,30 @@ describe('GroupedDaysAroundView', () => {
         const customEvents: IConcreteEvent[] = [
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'foo',
                 end: noon,
-                people: [],
                 start: midnight
             },
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'bar',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'baz',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'quux',
                 end: tomorrow,
-                people: [],
                 start: noon
             }
         ]
@@ -245,34 +227,30 @@ describe('GroupedDaysAroundView', () => {
         const customEvents: IConcreteEvent[] = [
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'foo',
                 end: noon,
-                people: [],
                 start: midnight
             },
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'foo',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'foo',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'foo',
                 end: tomorrow,
-                people: [],
                 start: noon
             }
         ]

@@ -1,4 +1,4 @@
-import {createStyles, Theme, Typography, withStyles} from '@material-ui/core'
+import {Typography, withStyles} from '@material-ui/core'
 import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import {HOURS_IN_DAY} from '../../constants'
@@ -11,102 +11,24 @@ import calculateParallelColumns, {IPositionInfoPartial} from '../../utility/calc
 import eventPositioning from '../../utility/eventPositioning'
 import Range from '../../utility/range/Range'
 import EventBlock, {EventFields} from '../EventBlock/EventBlock'
+import ClassNames from './ClassNames'
+import styles from './styles'
+import TESTING_CLASS_NAMES from './TESTING_CLASS_NAMES'
 
-export const TESTING_CLASS_NAMES = {
-    body: 'vertical-swimlane-column-body',
-    header: 'vertical-swimlane-column-header',
-    hourCell: 'vertical-swimlane-column-cell',
-    swimlane: 'vertical-swimlane-column-swimlane'
-}
-
-type ClassNames =
-    | 'body'
-    | 'cell'
-    | 'column'
-    | 'header'
-    | 'headerText'
-    | 'root'
-    | 'swimlane'
-
-const firstChildBorderFix = `&:first-child .${TESTING_CLASS_NAMES.body}`
-
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
-    body: {
-        borderBottomWidth: '1px',
-        borderColor: theme.palette.grey.A100,
-        borderLeftWidth: 0,
-        borderRightWidth: '1px',
-        borderStyle: 'solid',
-        borderTopWidth: 0,
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'row',
-        flexGrow: 9000,
-        position: 'relative',
-    },
-    cell: {
-        '&:first-child': {
-            borderLeft: 'none !important',
-        },
-        backgroundColor: theme.palette.background.paper,
-        borderLeft: `1px solid ${theme.palette.grey.A100}`,
-        boxSizing: 'border-box',
-        flexGrow: 1,
-        width: '100%'
-    },
-    column: {
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        left: 0,
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-    },
-    header: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-        flexGrow: 1,
-        padding: theme.spacing.unit,
-        textAlign: 'left',
-    },
-    headerText: {
-        color: theme.palette.primary.contrastText
-    },
-    root: {
-        [firstChildBorderFix]: {
-            borderLeftWidth: '1px'
-        },
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        height: '100%'
-    },
-    swimlane: {
-        '&:first-child': {
-            borderTop: 'none'
-        },
-        borderTop: `1px solid ${theme.palette.grey.A100}`,
-        position: 'relative',
-    }
-})
-
-export interface IVerticalSchedulerColumnOwnProps {
+export interface IVerticalSchedulerColumnOwnProps<T extends IConcreteEvent> {
     date: Date
-    events: IConcreteEvent[]
+    events: T[]
     renderEvent?: EventRenderer
     className?: string
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
     swimlanes: ISwimlane[]
-    swimlaneForEvent: (event: IConcreteEvent, swimlanes: ISwimlane[]) => ISwimlane
+    swimlaneForEvent: (event: T, swimlanes: ISwimlane[]) => ISwimlane
 }
 
-type VerticalSchedulerColumnProps =
-    & IVerticalSchedulerColumnOwnProps
+type VerticalSchedulerColumnProps<T extends IConcreteEvent> =
+    & IVerticalSchedulerColumnOwnProps<T>
     & { classes: Record<ClassNames, string> }
 
 const defaultWeekDayFormatter = Intl.DateTimeFormat(navigator.language, { weekday: 'short' }).format
@@ -119,8 +41,8 @@ const defaultEventRenderer: EventRenderer = (options) => (
 
 const cls = (...classes: string[]) => classes.join(' ')
 
-class VerticalSchedulerColumn
-    extends React.Component<VerticalSchedulerColumnProps, {}>
+class VerticalSchedulerColumn<T extends IConcreteEvent>
+    extends React.Component<VerticalSchedulerColumnProps<T>, {}>
 {
     public render() {
         const {
@@ -137,7 +59,6 @@ class VerticalSchedulerColumn
             },
             swimlanes,
             events,
-            emphasise = {},
             display = {},
             delegate = {},
             renderEvent = defaultEventRenderer
@@ -209,10 +130,10 @@ class VerticalSchedulerColumn
         return (
             <div className={root}>
                 <div className={cls(headerTesting, header)}>
-                    <Typography variant={'title'} className={headerText}>
+                    <Typography variant={'h5'} className={headerText}>
                         {weekDayFormatter(date)}
                     </Typography>
-                    <Typography variant={'subheading'} className={headerText}>
+                    <Typography variant={'subtitle1'} className={headerText}>
                         {monthDayFormatter(date)}
                     </Typography>
                 </div>
@@ -238,7 +159,6 @@ class VerticalSchedulerColumn
                                             renderEvent({
                                                 delegate,
                                                 display,
-                                                emphasise,
                                                 event,
                                                 i18nConfig,
                                                 key: `${swimlane.label}:${index}`,

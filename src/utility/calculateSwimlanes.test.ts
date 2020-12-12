@@ -21,34 +21,30 @@ describe('calculateSwimlanes', () => {
         const events: IConcreteEvent[] = [
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: noon,
-                people: [],
                 start: midnight
             },
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             }
         ]

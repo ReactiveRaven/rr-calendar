@@ -1,5 +1,4 @@
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core'
-import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
@@ -16,7 +15,6 @@ interface IDaysAroundView {
     events: IConcreteEvent[]
     before?: number
     after?: number
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
@@ -27,7 +25,7 @@ type ClassNames =
     | 'column'
     | 'root'
 
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+const styles = (theme: Theme) => createStyles<ClassNames, {}>({
     column: {
         flexBasis: 0,
         flexGrow: 1,
@@ -53,7 +51,6 @@ class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
             classes,
             date,
             now,
-            emphasise,
             display,
             i18nConfig,
             delegate,
@@ -77,7 +74,6 @@ class DaysAroundView extends React.Component<DaysAroundViewProps, {}> {
                             now={now}
                             className={column}
                             display={display}
-                            emphasise={emphasise}
                             events={events}
                             key={currentDate.toISOString()}
                             i18nConfig={i18nConfig}

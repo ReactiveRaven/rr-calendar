@@ -1,8 +1,5 @@
-import {createStyles, Overwrite, Theme, Typography, withStyles} from '@material-ui/core'
-import {
-    CSSProperties,
-    StyledComponentProps
-} from '@material-ui/core/styles/withStyles'
+import {Typography, withStyles} from '@material-ui/core'
+import {CSSProperties,} from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 import { findTimeZone, getUTCOffset } from 'timezone-support'
 import {HOURS_IN_DAY} from '../../constants'
@@ -15,104 +12,30 @@ import calculateParallelColumns from '../../utility/calculateParallelColumns'
 import eventPositioning from '../../utility/eventPositioning'
 import Range from '../../utility/range/Range'
 import EventBlock, {EventFields} from '../EventBlock/EventBlock'
+import ClassNames from './ClassNames'
+import styles from './styles'
+import TESTING_CLASS_NAMES from './TestingClassNames'
 
-export const TESTING_CLASS_NAMES = {
-    body: 'large-calendar-day-column-body',
-    cellAlternate: 'large-calendar-day-column-cell-alternate',
-    header: 'large-calendar-day-column-header',
-    hourCell: 'large-calendar-day-column-cell',
-    shade: 'large-calendar-day-column-shade'
-}
-
-export interface ILargeCalendarDayColumnProps {
+export interface ILargeCalendarDayColumnProps<T extends IConcreteEvent> {
     alternate?: boolean
     date: Date
     now: IDateAndTimezone
-    events: IConcreteEvent[]
+    events: T[]
+    allDayHeight?: number
     className?: string
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
     renderEvent?: EventRenderer
+    reportAllDayHeight?: (height: number) => void
 }
-
-type ClassNames =
-    | 'body'
-    | 'cell'
-    | 'cellAlternate'
-    | 'column'
-    | 'header'
-    | 'headerText'
-    | 'root'
-    | 'shade'
-
-const firstChildBorderFix = `&:first-child .${TESTING_CLASS_NAMES.body}`
-
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
-    body: {
-        borderBottomWidth: 0,
-        borderColor: theme.palette.grey.A100,
-        borderLeftWidth: 0,
-        borderRightWidth: '1px',
-        borderStyle: 'solid',
-        borderTopWidth: 0,
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 9000,
-        position: 'relative'
-    },
-    cell: {
-        backgroundColor: theme.palette.background.paper,
-        borderBottom: `1px solid ${theme.palette.grey.A100}`,
-        boxSizing: 'border-box',
-        flexGrow: 1,
-        width: '100%',
-    },
-    cellAlternate: {
-        backgroundColor: theme.palette.grey.A100,
-        borderBottomColor: theme.palette.background.paper
-    },
-    column: {
-        boxSizing: 'border-box',
-        paddingLeft: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-    },
-    header: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-        flexGrow: 1,
-        padding: theme.spacing.unit,
-        textAlign: 'left',
-    },
-    headerText: {
-        color: theme.palette.primary.contrastText
-    },
-    root: {
-        [firstChildBorderFix]: {
-            borderLeftWidth: '1px'
-        },
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%'
-    },
-    shade: {
-        background: 'black',
-        left: 0,
-        opacity: 0.5,
-        position: 'absolute',
-        right: 0,
-        top: 0,
-    }
-})
 
 const defaultWeekDayFormatter = Intl.DateTimeFormat(navigator.language, { weekday: 'short' }).format
 const defaultMonthDayFormatter = Intl.DateTimeFormat(navigator.language, { day: 'numeric' }).format
 const defaultEventRenderer: EventRenderer = (options) => (<EventBlock {...options} />)
 
-export type LargeCalendarDayColumnProps =
-    ILargeCalendarDayColumnProps &
+export type LargeCalendarDayColumnProps<T extends IConcreteEvent> =
+    ILargeCalendarDayColumnProps<T> &
     { classes: Record<ClassNames, string> }
 
 const cls = (...classes: string[]) => classes.join(' ')
@@ -130,11 +53,15 @@ const calculateOffset = (now?: IDateAndTimezone): number => {
     }
 }
 
-class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps, {}> {
+class LargeCalendarDayColumn<T extends IConcreteEvent>
+    extends React.Component<LargeCalendarDayColumnProps<T>, {}>
+{
     public render() {
+        // const arbitraryHeight = 41
         const {
             className = '',
             classes: {
+                // allDay,
                 body,
                 cell,
                 cellAlternate,
@@ -144,10 +71,10 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                 header,
                 headerText,
             },
+            // allDayHeight = arbitraryHeight,
             date,
             now,
             display = {},
-            emphasise = {},
             events,
             i18nConfig = {},
             delegate = {},
@@ -202,13 +129,27 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
 
         return <div className={cls(root, className)}>
             <div className={cls(TESTING_CLASS_NAMES.header, header)}>
-                <Typography variant={'title'} className={headerText}>
+                <Typography variant={'h5'} className={headerText}>
                     {weekDayFormatter(date)}
                 </Typography>
-                <Typography variant={'subheading'} className={headerText}>
+                <Typography variant={'subtitle1'} className={headerText}>
                     {monthDayFormatter(date)}
                 </Typography>
             </div>
+            {/*<div*/}
+            {/*    className={cls(TESTING_CLASS_NAMES.allDay, allDay)}*/}
+            {/*    style={{ height: allDayHeight ? `${allDayHeight}px` : 'auto' }}*/}
+            {/*>*/}
+            {/*    { allEvents.map((event, index) =>*/}
+            {/*        (<div*/}
+            {/*            key={index}*/}
+            {/*            className={event.className}*/}
+            {/*            ref={(container: HTMLDivElement) => this.handleAllDayRef(container)}*/}
+            {/*        >*/}
+            {/*            {event.description}*/}
+            {/*        </div>)*/}
+            {/*    ) }*/}
+            {/*</div>*/}
             <div className={cls(TESTING_CLASS_NAMES.body, body)}>
                 <div
                     className={cls(TESTING_CLASS_NAMES.shade, shade)}
@@ -227,7 +168,6 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
                             renderEvent({
                                 delegate,
                                 display,
-                                emphasise,
                                 event,
                                 i18nConfig,
                                 key: `${index}`,
@@ -243,15 +183,20 @@ class LargeCalendarDayColumn extends React.Component<LargeCalendarDayColumnProps
             </div>
         </div>
     }
+
+    public handleAllDayRef(container: HTMLDivElement) {
+        const { reportAllDayHeight } = this.props
+        if (container) {
+            const height = container.clientHeight
+            if (reportAllDayHeight) {
+                reportAllDayHeight(height)
+            }
+        }
+    }
 }
 
 export const undecorated = LargeCalendarDayColumn
 
-const decorated: React.ComponentType<
-    Overwrite<
-        ILargeCalendarDayColumnProps,
-        StyledComponentProps<ClassNames>
-    >
-> = withStyles(styles)(LargeCalendarDayColumn)
+const decorated = withStyles(styles)(LargeCalendarDayColumn)
 
 export default decorated

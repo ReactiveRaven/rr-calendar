@@ -3,26 +3,23 @@ import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import EventBlock from '../EventBlock/EventBlock'
-import LargeCalendarDayColumn, {
-    ILargeCalendarDayColumnProps,
-    TESTING_CLASS_NAMES
-} from './LargeCalendarDayColumn'
+import LargeCalendarDayColumn, {ILargeCalendarDayColumnProps} from './LargeCalendarDayColumn'
+import TESTING_CLASS_NAMES from './TestingClassNames'
 
 describe('LargeCalendarDayColumn', () => {
     const KNOWN_DATE = new Date('2000-12-31T23:59:59Z')
     const weekDayFormatter = Intl.DateTimeFormat('en-GB', { weekday: 'long'}).format
     const monthDayFormatter = Intl.DateTimeFormat('en-GB', { day: '2-digit' }).format
     const classes = Object.freeze({})
-    let defaultProps: ILargeCalendarDayColumnProps & {classes: object}
+    let defaultProps: ILargeCalendarDayColumnProps<IConcreteEvent> & {classes: object}
     let exampleEvent: IConcreteEvent
 
     beforeEach(() => {
         exampleEvent = {
             accentClassName: 'ACCENT_CLASS_NAME',
-            attributes: {},
             className: 'CLASS_NAME',
+            description: 'DESCRIPTION',
             end: new Date('2000-12-31T17:30:00Z'),
-            people: [],
             start: new Date('2000-12-31T09:00:00Z')
         }
 
@@ -73,6 +70,23 @@ describe('LargeCalendarDayColumn', () => {
         })
     })
 
+    // describe('allDay', () => {
+    //     it('should have an all-day band', () => {
+    //         expect(
+    //             mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE} />)
+    //                 .find(`.${TESTING_CLASS_NAMES.allDay}`)
+    //         )
+    //             .toHaveLength(1)
+    //     })
+    //
+    //     it('should be the given height', () => {
+    //         expect(
+    //             mount(<LargeCalendarDayColumn {...defaultProps} date={KNOWN_DATE}/>)
+    //                 .prop('styles')
+    //         )
+    //     })
+    // })
+
     describe('body', () => {
         it('should have a body', () => {
             expect(
@@ -107,10 +121,9 @@ describe('LargeCalendarDayColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: yesterday,
-                    people: [],
                     start: yesterday
                 }
             ]
@@ -121,22 +134,6 @@ describe('LargeCalendarDayColumn', () => {
                     .find('EventBlock')
             )
                 .toHaveLength(0)
-        })
-
-        it('should pass emphasise down to events', () => {
-            const emphasisObject = {}
-            const component = mount(<LargeCalendarDayColumn
-                {...defaultProps}
-                emphasise={emphasisObject}
-            />)
-
-            expect(
-                component
-                    .find('EventBlock')
-                    .first()
-                    .prop('emphasise')
-            )
-                .toEqual(emphasisObject)
         })
 
         it('should pass display down to events', () => {

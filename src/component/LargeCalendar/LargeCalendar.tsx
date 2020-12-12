@@ -24,7 +24,6 @@ export interface ILargeCalendarOwnProps {
     date: Date
     now: IDateAndTimezone
     events: IConcreteEvent[]
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     viewConfig?: ILargeCalendarViewConfig
     i18nConfig?: ICalendarI18NConfig
@@ -37,7 +36,6 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
         const {
             delegate,
             display,
-            emphasise,
             events,
             date,
             now,
@@ -50,7 +48,6 @@ export default class LargeCalendar extends React.Component<ILargeCalendarOwnProp
             date,
             delegate,
             display,
-            emphasise,
             events,
             i18nConfig,
             now,

@@ -1,11 +1,9 @@
 import {
     createStyles,
     Grid,
-    Overwrite,
     Theme,
     withStyles
 } from '@material-ui/core'
-import { CSSProperties, StyledComponentProps } from '@material-ui/core/styles/withStyles'
 import * as React from 'react'
 
 import {DAYS_IN_WEEK} from '../../constants'
@@ -36,24 +34,24 @@ type ClassNames =
     | 'root'
     | 'row'
 
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+const styles = (theme: Theme) => createStyles<ClassNames, {}>({
     cell: {
         flexGrow: 1,
     },
     headerCell: {
         color: theme.palette.text.secondary,
-        marginBottom: theme.spacing.unit,
-        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing(),
+        marginTop: theme.spacing(),
     },
     monthTitle: {
-        ...theme.typography.title,
+        ...theme.typography.h5,
         color: theme.palette.text.secondary,
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
         textAlign: 'left',
     },
     root: {
         ...theme.typography.body1,
-        minWidth: `calc((2em * ${DAYS_IN_WEEK}) + (${theme.spacing.unit}px * ${DAYS_IN_WEEK - 1}))`,
+        minWidth: `calc((2em * ${DAYS_IN_WEEK}) + (${theme.spacing()}px * ${DAYS_IN_WEEK - 1}))`,
         outline: 'none',
         textAlign: 'center',
     },
@@ -61,7 +59,7 @@ const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles
         alignItems: 'stretch',
         display: 'flex',
         justifyContent: 'space-evenly',
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(),
         width: '100%',
     }
 })
@@ -315,11 +313,6 @@ class SmallCalendar extends React.PureComponent<SmallCalendarProps, ISmallCalend
 
 export const undecorated = SmallCalendar
 
-const decorated: React.ComponentType<
-    Overwrite<
-        ISmallCalendarProps,
-        StyledComponentProps<ClassNames>
-    >
-> = withStyles(styles)(SmallCalendar)
+const decorated = withStyles(styles)(SmallCalendar)
 
 export default decorated

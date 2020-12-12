@@ -286,10 +286,9 @@ describe('SmallCalendar', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'foo',
-                    attributes: {},
                     className: 'bar',
+                    description: 'description',
                     end: tomorrow,
-                    people: [],
                     start: tomorrow
                 }
             ]

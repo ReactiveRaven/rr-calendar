@@ -6,8 +6,7 @@ import {
 } from './component/DateLabel/DateLabel'
 import { default as _LargeCalendar } from './component/LargeCalendar/LargeCalendar'
 import {
-    default as _LargeCalendarDayColumn,
-    ILargeCalendarDayColumnProps,
+    default as _LargeCalendarDayColumn
 } from './component/LargeCalendarDayColumn/LargeCalendarDayColumn'
 import {
     default as _SmallCalendar,
@@ -28,8 +27,7 @@ export const DateLabel =
 export const EventBlock =
     _EventBlock as React.FunctionComponent<IEventBlockOwnProps>
 export const LargeCalendar = _LargeCalendar
-export const LargeCalendarDayColumn =
-    _LargeCalendarDayColumn as React.FunctionComponent<ILargeCalendarDayColumnProps>
+export const LargeCalendarDayColumn = _LargeCalendarDayColumn
 export const SmallCalendar =
     _SmallCalendar as React.FunctionComponent<ISmallCalendarProps>
 export const SmallCalendarDayLabel =

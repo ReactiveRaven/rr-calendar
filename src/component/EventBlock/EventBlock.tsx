@@ -1,19 +1,15 @@
 import {createStyles, Theme, withStyles} from '@material-ui/core'
 import * as React from 'react'
-import {CSSProperties} from '../../../node_modules/@material-ui/core/styles/withStyles'
 import ICalendarDelegate from '../../model/ICalendarDelegate'
 import ICalendarI18NConfig from '../../model/ICalendarI18NConfig'
 import IConcreteEvent from '../../model/IConcreteEvent'
-import PersonPill from '../PersonPill/PersonPill'
 import TimeLabel from '../TimeLabel/TimeLabel'
 
-import FlareIcon from '@material-ui/icons/Brightness1'
 
 export interface IEventBlockOwnProps {
     event: IConcreteEvent
     style?: React.CSSProperties
     display?: Partial<Record<EventFields, boolean | undefined>>
-    emphasise?: Partial<Record<EventFields, boolean | undefined>>
     className?: string
     accentClassName?: string
     i18nConfig?: ICalendarI18NConfig
@@ -22,41 +18,25 @@ export interface IEventBlockOwnProps {
 
 type ClassNames =
     | 'end'
-    | 'important'
-    | 'personPill'
     | 'root'
 
 export type EventFields =
     | 'start'
     | 'end'
-    | 'people'
-    | 'location'
-    | 'attributes'
+    | 'description'
 
-const quarter = 4
 const half = 2
 
 const styles = (
     { spacing, typography, shadows }: Theme
-): Record<ClassNames, CSSProperties> => createStyles({
+)=> createStyles<ClassNames, {}>({
     end: {
-        borderRadius: spacing.unit,
-        bottom: spacing.unit / half,
+        borderRadius: spacing(),
+        bottom: spacing() / half,
         boxShadow: shadows[1],
-        left: spacing.unit / half,
-        padding: spacing.unit / half,
+        left: spacing() / half,
+        padding: spacing() / half,
         position: 'absolute',
-    },
-    important: {
-        ...typography.title,
-        color: undefined,
-        marginBottom: spacing.unit,
-        marginTop: spacing.unit,
-    },
-    personPill: {
-        marginBottom: spacing.unit / quarter,
-        marginRight: spacing.unit / half,
-        marginTop: spacing.unit / quarter
     },
     root: {
         background: 'lime',
@@ -64,7 +44,7 @@ const styles = (
         borderRadius: '2px',
         boxSizing: 'border-box',
         overflow: 'hidden',
-        padding: spacing.unit,
+        padding: spacing(),
         position: 'absolute',
         ...typography.body1
     },
@@ -88,18 +68,15 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
 
     public render() {
         const {
-            accentClassName = '',
             className = '',
             event: {
                 className: eventClassName,
                 end,
-                location: {name: locationName = '-'} = {},
-                people,
                 start,
-                attributes
+                description
             },
             style = {},
-            classes: {end: endClass, root, important, personPill},
+            classes: {end: endClass, root},
             i18nConfig = {},
         } = this.props
 
@@ -112,55 +89,13 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
                 onMouseEnter={this.handleMouseEnter}
             >
                 { this.display('start') &&
-                    <div
-                        className={cls(
-                            'start',
-                            this.emphasise('start') && important
-                        )}
-                    >
+                    <div className={'start'}>
                         <TimeLabel date={start} formatter={i18nConfig.timeFormatter}/>
                     </div>
                 }
-                <FlareIcon />
-                { this.display('location') &&
-                    <div
-                        className={cls(
-                            'location',
-                            this.emphasise('location') && important
-                        )}
-                    >
-                        {locationName}
-                    </div>
-                }
-                { this.display('attributes') && Object.keys(attributes)
-                    .map((key, index) => (
-                        <div
-                            key={`${index}`}
-                            className={cls(
-                                'attributes',
-                                this.emphasise('attributes') && important
-                            )}
-                        >
-                            {key}: {attributes[key]}
-                        </div>
-                    ))
-                }
-                { this.display('people') &&
-                    <div
-                        className={cls(
-                            'people',
-                            this.emphasise('people') && important
-                        )}
-                    >
-                        {people
-                            .map((value, index) => (
-                                <PersonPill
-                                    className={cls(personPill, accentClassName)}
-                                    person={value}
-                                    key={`${index}`}
-                                />
-                            ))
-                        }
+                { this.display('description') &&
+                    <div>
+                        {description}
                     </div>
                 }
                 { this.display('end') &&
@@ -168,8 +103,7 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
                         className={cls(
                             'end',
                             endClass,
-                            className,
-                            this.emphasise('end') && important
+                            className
                         )}
                     >
                         <TimeLabel date={end} formatter={i18nConfig.timeFormatter}/>
@@ -195,18 +129,6 @@ class EventBlock extends React.Component<EventBlockProps, {}> {
         if (onHoverEvent !== undefined) {
             onHoverEvent(this.props.event, this.ref)
         }
-    }
-
-    private emphasise = (field: EventFields): boolean => {
-        const { emphasise } = this.props
-        if (typeof emphasise === 'undefined') {
-            return false
-        }
-        const value = emphasise[field]
-        if (typeof value === 'undefined') {
-            return false
-        }
-        return value
     }
 
     private display = (field: EventFields): boolean => {

@@ -5,7 +5,8 @@ import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import ISwimlane from '../../model/ISwimlane'
 import EventBlock from '../EventBlock/EventBlock'
-import VerticalSchedulerColumn, { TESTING_CLASS_NAMES } from './VerticalSchedulerColumn'
+import TESTING_CLASS_NAMES from './TESTING_CLASS_NAMES'
+import VerticalSchedulerColumn  from './VerticalSchedulerColumn'
 
 describe('VerticalSchedulerColumn', () => {
     const KNOWN_DATE = new Date('2000-12-31T23:59:59Z')
@@ -80,10 +81,9 @@ describe('VerticalSchedulerColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-31T17:30:00Z')
                 }
             ]
@@ -100,10 +100,9 @@ describe('VerticalSchedulerColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-30T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-30T09:00:00Z')
                 }
             ]
@@ -120,43 +119,14 @@ describe('VerticalSchedulerColumn', () => {
                 .toHaveLength(0)
         })
 
-        it('should pass emphasise down to events', () => {
-            const emphasisObject = {}
-            const events: IConcreteEvent[] = [
-                {
-                    accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
-                    className: 'CLASS_NAME',
-                    end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
-                    start: new Date('2000-12-31T09:00:00Z')
-                }
-            ]
-            const component = mount(<VerticalSchedulerColumn
-                {...defaultProps}
-                date={new Date('2000-12-31T12:00:00Z')}
-                events={events}
-                emphasise={emphasisObject}
-            />)
-
-            expect(
-                component
-                    .find('EventBlock')
-                    .first()
-                    .prop('emphasise')
-            )
-                .toEqual(emphasisObject)
-        })
-
         it('should pass display down to events', () => {
             const displayObject = {}
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
@@ -181,10 +151,9 @@ describe('VerticalSchedulerColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
@@ -209,10 +178,9 @@ describe('VerticalSchedulerColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-31T09:00:00Z')
                 }
             ]
@@ -241,10 +209,9 @@ describe('VerticalSchedulerColumn', () => {
             const events: IConcreteEvent[] = [
                 {
                     accentClassName: 'ACCENT_CLASS_NAME',
-                    attributes: {},
                     className: 'CLASS_NAME',
+                    description: 'DESCRIPTION',
                     end: new Date('2000-12-31T17:30:00Z'),
-                    people: [],
                     start: new Date('2000-12-31T09:00:00Z')
                 }
             ]

@@ -1,6 +1,5 @@
-import {createStyles, Theme, withStyles} from '@material-ui/core'
+import {withStyles} from '@material-ui/core'
 import * as React from 'react'
-import {CSSProperties} from '../../../node_modules/@material-ui/core/styles/withStyles'
 import {DAYS_IN_WEEK} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
 import EventRenderer from '../../model/EventRenderer'
@@ -12,38 +11,27 @@ import calculateSwimlanes from '../../utility/calculateSwimlanes'
 import Range from '../../utility/range/Range'
 import {EventFields} from '../EventBlock/EventBlock'
 import VerticalSchedulerColumn from '../VerticalSchedulerColumn/VerticalSchedulerColumn'
+import ClassNames from './ClassNames'
+import styles from './styles'
 
-interface IGroupedWeekViewOwnProps {
+interface IGroupedWeekViewOwnProps<T extends IConcreteEvent> {
     date: Date
-    events: IConcreteEvent[]
+    events: T[]
     swimlaneForEvent: (event: IConcreteEvent) => string
     weekDayStart?: WeekDayStart
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
     renderEvent?: EventRenderer
 }
 
-type ClassNames =
-    | 'column'
-    | 'root'
+type GroupedWeekViewProps<T extends IConcreteEvent> =
+    IGroupedWeekViewOwnProps<T> &
+    { classes: Record<ClassNames, string> }
 
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
-    column: {
-        flexGrow: 1,
-        height: '100%'
-    },
-    root: {
-        display: 'flex',
-        height: '100%',
-        width: '100%'
-    }
-})
-
-type GroupedWeekViewProps = IGroupedWeekViewOwnProps & { classes: Record<ClassNames, string> }
-
-class GroupedWeekView extends React.Component<GroupedWeekViewProps, {}> {
+class GroupedWeekView<T extends IConcreteEvent>
+    extends React.Component<GroupedWeekViewProps<T>, {}>
+{
     public render() {
         const {
             classes: {
@@ -52,7 +40,6 @@ class GroupedWeekView extends React.Component<GroupedWeekViewProps, {}> {
             },
             date,
             events,
-            emphasise = {},
             display = {},
             weekDayStart = WeekDayStart.Monday,
             i18nConfig = {},
@@ -103,7 +90,6 @@ class GroupedWeekView extends React.Component<GroupedWeekViewProps, {}> {
                                 key={`${columnDate}`}
                                 date={columnDate}
                                 className={column}
-                                emphasise={emphasise}
                                 display={display}
                                 events={relevantEvents}
                                 i18nConfig={i18nConfig}

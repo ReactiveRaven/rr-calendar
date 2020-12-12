@@ -5,7 +5,7 @@ import WeekDayStart from '../../enum/WeekDayStart'
 import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import EventBlock from '../EventBlock/EventBlock'
-import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
+import TESTING_CLASS_NAMES from '../LargeCalendarDayColumn/TestingClassNames'
 import WeekView from './WeekView'
 
 describe('WeekView', () => {
@@ -54,23 +54,6 @@ describe('WeekView', () => {
             .find(`.${TESTING_CLASS_NAMES.header}`)
             .map(wrapper => wrapper.text())
             .forEach((text, index) => expect(text).toEqual(expectedStrings[index]))
-    })
-
-    it('should pass down emphasis keys properly', () => {
-        const emphasisObject = {}
-
-        const component = mount(<WeekView
-            {...defaultProps}
-            emphasise={emphasisObject}
-        />)
-
-        expect(
-            component
-                .find('LargeCalendarDayColumn')
-                .first()
-                .prop('emphasise')
-        )
-            .toEqual(emphasisObject)
     })
 
     it('should pass down display keys properly', () => {

@@ -9,8 +9,8 @@ export default abstract class LargeCalendarViewConfig {
         return new LargeCalendarWeekViewConfig()
     }
 
-    public static groupedWeekView(options: {
-        swimlaneForEvent: (event: IConcreteEvent) => string
+    public static groupedWeekView<T extends IConcreteEvent>(options: {
+        swimlaneForEvent: (event: T) => string
     }): LargeCalendarGroupedWeekViewConfig {
         return new LargeCalendarGroupedWeekViewConfig(options)
     }

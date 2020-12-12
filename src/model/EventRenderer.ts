@@ -9,7 +9,6 @@ type EventRenderer = (
     options: {
         delegate: ICalendarDelegate
         display: Partial<Record<EventFields, boolean>>
-        emphasise: Partial<Record<EventFields, boolean>>
         event: IConcreteEvent
         i18nConfig: ICalendarI18NConfig
         key: string

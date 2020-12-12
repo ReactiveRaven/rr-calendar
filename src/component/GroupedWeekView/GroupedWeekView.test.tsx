@@ -6,7 +6,7 @@ import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import ISwimlane from '../../model/ISwimlane'
 import EventBlock from '../EventBlock/EventBlock'
-import {TESTING_CLASS_NAMES} from '../VerticalSchedulerColumn/VerticalSchedulerColumn'
+import TESTING_CLASS_NAMES from '../VerticalSchedulerColumn/TESTING_CLASS_NAMES'
 import GroupedWeekView from './GroupedWeekView'
 
 const HALF = 2
@@ -65,23 +65,6 @@ describe('GroupedWeekView', () => {
             .find(`.${TESTING_CLASS_NAMES.header}`)
             .map(wrapper => wrapper.text())
             .forEach((text, index) => expect(text).toEqual(expectedStrings[index]))
-    })
-
-    it('should pass down emphasis keys properly', () => {
-        const emphasisObject = {}
-
-        const component = mount(<GroupedWeekView
-            {...defaultProps}
-            emphasise={emphasisObject}
-        />)
-
-        expect(
-            component
-                .find('VerticalSchedulerColumn')
-                .first()
-                .prop('emphasise')
-        )
-            .toEqual(emphasisObject)
     })
 
     it('should pass down display keys properly', () => {
@@ -180,34 +163,30 @@ describe('GroupedWeekView', () => {
         const events: IConcreteEvent[] = [
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: noon,
-                people: [],
                 start: midnight
             },
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             }
         ]
@@ -242,34 +221,30 @@ describe('GroupedWeekView', () => {
         const events: IConcreteEvent[] = [
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: noon,
-                people: [],
                 start: midnight
             },
             {
                 accentClassName: 'bar',
-                attributes: {},
                 className: 'foo',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             },
             {
                 accentClassName: 'quux',
-                attributes: {},
                 className: 'baz',
+                description: 'description',
                 end: tomorrow,
-                people: [],
                 start: noon
             }
         ]

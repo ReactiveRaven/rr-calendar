@@ -30,17 +30,6 @@ describe('LargeCalendar', () => {
         expect(component.find('WeekView')).toHaveLength(1)
     })
 
-    it('should pass down emphasise key properly', () => {
-        const emphasiseObject = {}
-        const component = mount(<LargeCalendar
-            {...defaultProps}
-            emphasise={emphasiseObject}
-        />)
-
-        expect(component.find('WeekView').first().prop('emphasise'))
-            .toBe(emphasiseObject)
-    })
-
     it('should pass down display key properly', () => {
         const displayObject = {}
         const component = mount(<LargeCalendar

@@ -3,7 +3,7 @@ import * as React from 'react'
 import EventRenderer from '../../model/EventRenderer'
 import IConcreteEvent from '../../model/IConcreteEvent'
 import EventBlock from '../EventBlock/EventBlock'
-import {TESTING_CLASS_NAMES} from '../LargeCalendarDayColumn/LargeCalendarDayColumn'
+import TESTING_CLASS_NAMES from '../LargeCalendarDayColumn/TestingClassNames'
 import DaysAroundView from './DaysAroundView'
 
 describe('DaysAroundView', () => {
@@ -67,20 +67,6 @@ describe('DaysAroundView', () => {
                 .map(wrapper => wrapper.text())
         )
             .toEqual(dateStrings)
-    })
-
-    it('should pass emphasise key down as expected', () => {
-        const emphasisObject = {}
-
-        expect(
-            mount(<DaysAroundView
-                {...defaultProps}
-                emphasise={emphasisObject}
-            />)
-                .find('LargeCalendarDayColumn')
-                .prop('emphasise')
-        )
-            .toBe(emphasisObject)
     })
 
     it('should pass display key down as expected', () => {

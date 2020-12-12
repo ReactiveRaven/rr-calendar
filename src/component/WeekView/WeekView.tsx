@@ -1,6 +1,5 @@
 import {createStyles, Theme, withStyles} from '@material-ui/core'
 import * as React from 'react'
-import {CSSProperties} from '../../../node_modules/@material-ui/core/styles/withStyles'
 import {DAYS_IN_WEEK} from '../../constants'
 import WeekDayStart from '../../enum/WeekDayStart'
 import EventRenderer from '../../model/EventRenderer'
@@ -17,7 +16,6 @@ interface IWeekViewOwnProps {
     now: IDateAndTimezone
     events: IConcreteEvent[]
     weekDayStart?: WeekDayStart
-    emphasise?: Partial<Record<EventFields, boolean>>
     display?: Partial<Record<EventFields, boolean>>
     i18nConfig?: ICalendarI18NConfig
     delegate?: ICalendarDelegate
@@ -28,7 +26,7 @@ type ClassNames =
     | 'column'
     | 'root'
 
-const styles = (theme: Theme): Record<ClassNames, CSSProperties> => createStyles({
+const styles = (theme: Theme) => createStyles<ClassNames, {}>({
     column: {
         flexGrow: 1,
         height: '100%'
@@ -54,7 +52,6 @@ class WeekView extends React.Component<WeekViewProps, {}> {
             date,
             now,
             events,
-            emphasise = {},
             display = {},
             weekDayStart = WeekDayStart.Monday,
             i18nConfig = {},
@@ -96,7 +93,6 @@ class WeekView extends React.Component<WeekViewProps, {}> {
                                 date={columnDate}
                                 now={now}
                                 className={column}
-                                emphasise={emphasise}
                                 display={display}
                                 events={relevantEvents}
                                 i18nConfig={i18nConfig}
