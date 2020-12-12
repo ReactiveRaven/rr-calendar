@@ -5,5 +5,5 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    verioning-strategy: widen
+    versioning-strategy: widen
     open-pull-requests-limit: 99
