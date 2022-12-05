@@ -21,7 +21,7 @@
   "types": "lib/entrypoint.d.ts",
   "dependencies": {
     "keyboardevent-key-polyfill": "^1.1.0",
-    "timezone-support": "^2.0.2"
+    "timezone-support": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
